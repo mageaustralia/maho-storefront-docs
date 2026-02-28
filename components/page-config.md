@@ -16,6 +16,7 @@ The `page.json` file controls which component variant renders on each page type.
         "tabs": "accordion"
       },
       "sections": {
+        "showSpecifications": true,
         "showReviews": true,
         "reviewsPosition": "tabbed"
       }

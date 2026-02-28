@@ -92,6 +92,22 @@ Traditional dropdown selects for each configurable attribute. Shows available st
 
 Button-style option selection. Each option is a toggleable button in a row.
 
+## Tabs Variants
+
+### TabsAccordion
+
+Collapsible sections for description, specifications, reviews, related, and upsell products. Description open by default. Best suited for sidebar layouts.
+
+### TabsTabbed
+
+Full-width sections below the fold. Each section (description, specifications, reviews, related, upsell) gets its own block. Best for standard 2-column layouts.
+
+### Specifications Tab
+
+Both tab variants include a specifications section that displays additional product attributes marked as "Visible on Product View Page" in the Maho admin. Controlled via `showSpecifications` in `page.json` sections.
+
+Attributes rendered as a table with label/value pairs. Core attributes (name, SKU, price, etc.) are excluded — only custom product attributes appear.
+
 ## Configuration
 
 ```json
@@ -106,6 +122,7 @@ Button-style option selection. Each option is a toggleable button in a row.
         "layout": "masonry"
       },
       "sections": {
+        "showSpecifications": true,
         "showReviews": true,
         "reviewsPosition": "tabbed",
         "showRelated": true,
