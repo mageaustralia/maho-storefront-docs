@@ -8,9 +8,9 @@ The checkout controller manages the multi-step checkout flow — shipping addres
 
 ```mermaid
 flowchart LR
-    S1["1. Shipping\nAddress"] --> S2["2. Shipping\nMethod"]
-    S2 --> S3["3. Payment\nMethod"]
-    S3 --> S4["4. Review\n& Place Order"]
+    S1["1. Shipping<br/>Address"] --> S2["2. Shipping<br/>Method"]
+    S2 --> S3["3. Payment<br/>Method"]
+    S3 --> S4["4. Review<br/>& Place Order"]
 ```
 
 ## Targets

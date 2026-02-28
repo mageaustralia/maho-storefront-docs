@@ -11,14 +11,14 @@ A single Maho Storefront Worker deployment can serve multiple stores, each with 
 ```mermaid
 flowchart TD
     Request[Incoming Request] --> Hostname[Extract Hostname]
-    Hostname --> Registry["Store Registry\nstores.json"]
+    Hostname --> Registry["Store Registry<br/>stores.json"]
     Registry --> Match{Hostname Match?}
-    Match -->|Yes| Store["Store Code\ne.g., sv_2"]
-    Match -->|No| Default["Default Store\nen"]
-    Store --> Theme["Load Theme\ntheme-tech.json"]
-    Store --> Config["Load Page Config\npage-tech.json"]
-    Store --> KV["KV Prefix\nsv_2:product:..."]
-    Theme --> Render["Render with\nstore context"]
+    Match -->|Yes| Store["Store Code<br/>e.g., sv_2"]
+    Match -->|No| Default["Default Store<br/>en"]
+    Store --> Theme["Load Theme<br/>theme-tech.json"]
+    Store --> Config["Load Page Config<br/>page-tech.json"]
+    Store --> KV["KV Prefix<br/>sv_2:product:..."]
+    Theme --> Render["Render with<br/>store context"]
     Config --> Render
     KV --> Render
 ```

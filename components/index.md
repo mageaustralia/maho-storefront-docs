@@ -6,9 +6,9 @@ The Maho Storefront uses a slot-based component architecture where each UI eleme
 
 ```mermaid
 flowchart LR
-    PageJSON["page.json\nVariant Config"] --> Resolver["page-config.ts\ngetVariant"]
-    Resolver --> Index["Component index.tsx\nVariant Map"]
-    Index --> Variant["Selected Variant\ne.g. CardMinimal.tsx"]
+    PageJSON["page.json<br/>Variant Config"] --> Resolver["page-config.ts<br/>getVariant"]
+    Resolver --> Index["Component index.tsx<br/>Variant Map"]
+    Index --> Variant["Selected Variant<br/>e.g. CardMinimal.tsx"]
     Variant --> HTML[Rendered HTML]
 ```
 

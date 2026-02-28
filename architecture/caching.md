@@ -8,9 +8,9 @@ The Maho Storefront uses a three-tier caching strategy to deliver sub-100ms resp
 
 ```mermaid
 graph LR
-    Request[Request] --> T1{"Tier 1\nEdge Cache"}
+    Request[Request] --> T1{"Tier 1<br/>Edge Cache"}
     T1 -->|HIT ~1ms| Response[Response]
-    T1 -->|MISS| T2{"Tier 2\nKV Store"}
+    T1 -->|MISS| T2{"Tier 2<br/>KV Store"}
     T2 -->|HIT ~10-50ms| Render[SSR Render]
     T2 -->|MISS| T3["Tier 3\nOrigin API"]
     T3 -->|~100-300ms| Cache[Cache in KV]
@@ -135,17 +135,17 @@ These routes always execute the Worker handler, hitting KV for catalog data but 
 ```mermaid
 graph TB
     subgraph "Per PoP (200+ locations)"
-        EdgeSyd["Edge Cache\nSydney"]
-        EdgeSF["Edge Cache\nSan Francisco"]
-        EdgeLon["Edge Cache\nLondon"]
+        EdgeSyd["Edge Cache<br/>Sydney"]
+        EdgeSF["Edge Cache<br/>San Francisco"]
+        EdgeLon["Edge Cache<br/>London"]
     end
 
     subgraph "Global (eventually consistent)"
-        KV[("Cloudflare KV\nAll catalog data")]
+        KV[("Cloudflare KV<br/>All catalog data")]
     end
 
     subgraph "Origin (single region)"
-        Maho["Maho Backend\nProducts, Orders, CMS"]
+        Maho["Maho Backend<br/>Products, Orders, CMS"]
     end
 
     EdgeSyd --> KV

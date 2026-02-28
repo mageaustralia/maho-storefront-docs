@@ -6,10 +6,10 @@ The Maho Storefront uses a JSON-driven theming system where design tokens define
 
 ```mermaid
 flowchart LR
-    JSON["theme.json\nDesign Tokens"] --> UnoCSS["uno.config.ts\nBuild Step"]
-    UnoCSS --> CSS[":root CSS\nCustom Properties"]
-    CSS --> DaisyUI["DaisyUI\nComponents"]
-    CSS --> Utilities["UnoCSS\nUtilities"]
+    JSON["theme.json<br/>Design Tokens"] --> UnoCSS["uno.config.ts<br/>Build Step"]
+    UnoCSS --> CSS[":root CSS<br/>Custom Properties"]
+    CSS --> DaisyUI["DaisyUI<br/>Components"]
+    CSS --> Utilities["UnoCSS<br/>Utilities"]
     DaisyUI --> UI[Rendered UI]
     Utilities --> UI
 ```

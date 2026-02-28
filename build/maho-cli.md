@@ -40,7 +40,7 @@ The Maho backend includes a CLI command that builds storefront assets using [Bun
 ```mermaid
 flowchart TD
     CLI[./maho storefront:build] --> Bun{Bun installed?}
-    Bun -->|No| Download["Download Bun\nfrom GitHub"]
+    Bun -->|No| Download["Download Bun<br/>from GitHub"]
     Download --> Build
     Bun -->|Yes| Build[Build CSS + JS]
     Build --> Size[Report file sizes]

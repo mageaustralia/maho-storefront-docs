@@ -31,10 +31,10 @@ DaisyUI's CSS needs processing to work with UnoCSS instead of Tailwind:
 
 ```mermaid
 flowchart LR
-    Raw["DaisyUI CSS\nfrom node_modules"] --> Strip["Strip @layer\ndirectives"]
-    Strip --> Flatten["Flatten bare\n&lbrace;...&rbrace; blocks"]
-    Flatten --> Preserve["Preserve meaningful\nnesting"]
-    Preserve --> Preflight["UnoCSS\nPreflight"]
+    Raw["DaisyUI CSS<br/>from node_modules"] --> Strip["Strip @layer<br/>directives"]
+    Strip --> Flatten["Flatten bare<br/>&lbrace;...&rbrace; blocks"]
+    Flatten --> Preserve["Preserve meaningful<br/>nesting"]
+    Preserve --> Preflight["UnoCSS<br/>Preflight"]
 ```
 
 The `processDaisyCSS()` function:

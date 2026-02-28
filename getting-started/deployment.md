@@ -22,7 +22,7 @@ flowchart LR
     Build[bun run build] --> Deploy[wrangler deploy]
     Deploy --> Worker[Updated Worker]
     Worker --> Assets[New CSS/JS hashes]
-    Assets --> EdgeBust["Edge cache\nauto-invalidates"]
+    Assets --> EdgeBust["Edge cache<br/>auto-invalidates"]
 ```
 
 ### 1. Build Assets

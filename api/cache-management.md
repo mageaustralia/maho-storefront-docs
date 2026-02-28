@@ -82,7 +82,7 @@ flowchart TD
     Sync --> Pulse[Update pulse hash]
     Delete --> Pulse
     SyncCat --> Pulse
-    Pulse --> EdgeBust["Edge caches auto-invalidate\nvia version tag change"]
+    Pulse --> EdgeBust["Edge caches auto-invalidate<br/>via version tag change"]
 ```
 
 For targeted invalidation without a full sync:

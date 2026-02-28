@@ -6,8 +6,8 @@ The Maho Storefront uses [DaisyUI v5](https://daisyui.com/) as its component CSS
 
 ```mermaid
 flowchart LR
-    DaisyUI["DaisyUI v5\nnode_modules"] --> Process["processDaisyCSS\nuno.config.ts"]
-    Process --> Preflights["UnoCSS\nPreflights"]
+    DaisyUI["DaisyUI v5<br/>node_modules"] --> Process["processDaisyCSS<br/>uno.config.ts"]
+    Process --> Preflights["UnoCSS<br/>Preflights"]
     Theme[theme.json] --> Tokens["DaisyUI\nTheme Vars"]
     Tokens --> Preflights
     Preflights --> Output[public/styles.css]
