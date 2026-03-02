@@ -117,6 +117,9 @@ interface Category {
   childrenIds: number[]
   path: string
 
+  // Layout
+  pageLayout?: string       // e.g. 'one_column', 'two_columns_left'. Null means unset (falls back to store default)
+
   // SEO
   metaTitle?: string
   metaDescription?: string
@@ -190,7 +193,7 @@ interface CmsPage {
   imageUrl?: string
   metaKeywords?: string
   metaDescription?: string
-  rootTemplate?: string
+  rootTemplate: string      // Page layout — 'one_column', 'two_columns_left', etc. Always present, defaults to 'one_column' when unset in DB
   status: number
   createdAt?: string
   updatedAt?: string
