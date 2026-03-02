@@ -1,8 +1,8 @@
 # Product Display Components
 
-Components for the product detail page — gallery, cards, tabs, variant pickers, and layout.
+Components for the product detail page - gallery, cards, tabs, variant pickers, and layout.
 
-![Product page — gallery, variant swatches, quantity stepper, add to cart](/screenshots/product.png)
+![Product page - gallery, variant swatches, quantity stepper, add to cart](/screenshots/product.png)
 
 ## Component Slots
 
@@ -13,14 +13,14 @@ Components for the product detail page — gallery, cards, tabs, variant pickers
 | `layout` | Masonry | masonry | Product page layout |
 | `variant-picker` | Swatch, Dropdown, Button | swatch | Configurable option selector |
 | `tabs` | Accordion, Tabbed | tabbed | Product info tabs (description, specs, reviews) |
-| `price` | — | — | Price display with sale/tier pricing |
-| `badge` | — | — | Sale, new, out-of-stock badges |
-| `quantity-stepper` | — | — | +/- quantity selector |
-| `sticky-atc` | — | — | Sticky add-to-cart bar on scroll |
-| `stock-indicator` | — | — | In stock / low stock / out of stock |
-| `info-panel` | — | — | Shipping, returns, warranty info |
-| `breadcrumb` | — | — | Category breadcrumb trail |
-| `recently-viewed` | — | — | Recently viewed products carousel |
+| `price` | - | - | Price display with sale/tier pricing |
+| `badge` | - | - | Sale, new, out-of-stock badges |
+| `quantity-stepper` | - | - | +/- quantity selector |
+| `sticky-atc` | - | - | Sticky add-to-cart bar on scroll |
+| `stock-indicator` | - | - | In stock / low stock / out of stock |
+| `info-panel` | - | - | Shipping, returns, warranty info |
+| `breadcrumb` | - | - | Category breadcrumb trail |
+| `recently-viewed` | - | - | Recently viewed products carousel |
 
 ## Card Variants
 
@@ -44,7 +44,7 @@ Full-featured card with image, price, ratings, quick-add button, and color swatc
 
 ### CardMinimal
 
-Borderless, image-focused card. Image zooms on hover. No quick-add button — click navigates to product page.
+Borderless, image-focused card. Image zooms on hover. No quick-add button - click navigates to product page.
 
 ```
 ┌──────────────────┐
@@ -72,7 +72,7 @@ Horizontal thumbnail strip below main image. Click thumbnails to switch. Support
 
 ### GalleryGrid
 
-All images displayed in a grid layout. No carousel — all images visible at once. Ideal for products with few images.
+All images displayed in a grid layout. No carousel - all images visible at once. Ideal for products with few images.
 
 ### GallerySingle
 
@@ -106,7 +106,7 @@ Full-width sections below the fold. Each section (description, specifications, r
 
 Both tab variants include a specifications section that displays additional product attributes marked as "Visible on Product View Page" in the Maho admin. Controlled via `showSpecifications` in `page.json` sections.
 
-Attributes rendered as a table with label/value pairs. Core attributes (name, SKU, price, etc.) are excluded — only custom product attributes appear.
+Attributes rendered as a table with label/value pairs. Core attributes (name, SKU, price, etc.) are excluded - only custom product attributes appear.
 
 ## Configuration
 

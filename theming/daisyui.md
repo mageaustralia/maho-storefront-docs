@@ -17,9 +17,9 @@ flowchart LR
 
 DaisyUI v5 is designed for Tailwind CSS v4. The storefront uses UnoCSS instead because:
 
-- **Faster builds** — UnoCSS is significantly faster than Tailwind
-- **More flexible** — Custom preflights, rules, and shortcuts
-- **Smaller output** — Only generates used utility classes
+- **Faster builds** - UnoCSS is significantly faster than Tailwind
+- **More flexible** - Custom preflights, rules, and shortcuts
+- **Smaller output** - Only generates used utility classes
 
 ### CSS Processing
 
@@ -49,7 +49,7 @@ DaisyUI uses its own CSS variable naming. `uno.config.ts` maps `theme.json` toke
 | `info` | `--color-info` | `alert-info` |
 
 ::: warning Important
-DaisyUI's `primary` is the storefront's `accent` color. This reversal is intentional — the most visually prominent elements (buttons, links, badges) should use the accent/CTA color.
+DaisyUI's `primary` is the storefront's `accent` color. This reversal is intentional - the most visually prominent elements (buttons, links, badges) should use the accent/CTA color.
 :::
 
 ## DaisyUI v5 Component Patterns

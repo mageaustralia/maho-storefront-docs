@@ -1,6 +1,6 @@
 # Adding Payment Methods to the Storefront
 
-The storefront uses a **payment adapter pattern** — each payment gateway has its own adapter file, and the checkout controller discovers them automatically via a registry. You never edit the checkout controller to add a payment method.
+The storefront uses a **payment adapter pattern** - each payment gateway has its own adapter file, and the checkout controller discovers them automatically via a registry. You never edit the checkout controller to add a payment method.
 
 ## Architecture
 
@@ -12,7 +12,7 @@ src/js/payment-methods/
 ```
 
 ```
-Checkout Controller (core — never edited for payments)
+Checkout Controller (core - never edited for payments)
         │
         ▼
   getAdapter(methodCode)  ←── payment-methods/index.js
@@ -29,7 +29,7 @@ Checkout Controller (core — never edited for payments)
 
 1. Checkout controller fetches available payment methods from the Maho API
 2. User selects a payment method (radio buttons)
-3. Controller calls `getAdapter(methodCode)` — returns an adapter or `null`
+3. Controller calls `getAdapter(methodCode)` - returns an adapter or `null`
 4. If an adapter exists, controller calls `adapter.init(container)` which renders gateway-specific UI into a generic `<div>` in the checkout template
 5. On "Place Order", controller calls `adapter.tokenize()` which returns payment data (nonce, device data, etc.)
 6. Controller sends `paymentData` alongside the order to the Maho API
@@ -53,7 +53,7 @@ export class MyGatewayAdapter extends BasePaymentAdapter {
   }
 
   // Called when user selects this payment method.
-  // `container` is an empty <div> — render your UI into it.
+  // `container` is an empty <div> - render your UI into it.
   async init(container, context) {
     // Load external SDK
     await this._loadSDK();
@@ -76,7 +76,7 @@ export class MyGatewayAdapter extends BasePaymentAdapter {
   }
 
   // Called just before place-order.
-  // Return an object — it gets sent as `paymentData` in the API request.
+  // Return an object - it gets sent as `paymentData` in the API request.
   async tokenize() {
     const { token } = await this._instance.tokenize();
     return {
@@ -118,7 +118,7 @@ const adapters = [
 ];
 ```
 
-### Step 3: Backend — Maho API
+### Step 3: Backend - Maho API
 
 The storefront sends this to `POST /api/guest-carts/{id}/place-order`:
 
@@ -134,7 +134,7 @@ The storefront sends this to `POST /api/guest-carts/{id}/place-order`:
 
 The API controller passes `paymentData` to `CartService::setPaymentMethod()`, which calls `$payment->importData(...)`. This triggers the Maho payment model's `assignData()` method, which stores the nonce/token in `additional_information`.
 
-**You don't need to change any API code** — the pipeline is generic. As long as your Maho payment module's `assignData()` reads from the same keys you return in `tokenize()`, it works.
+**You don't need to change any API code** - the pipeline is generic. As long as your Maho payment module's `assignData()` reads from the same keys you return in `tokenize()`, it works.
 
 ### Step 4: Build & Deploy
 
@@ -147,9 +147,9 @@ bun run build   # Rebuilds JS bundle with new adapter
 
 Payment adapters render HTML at runtime, so UnoCSS can't scan their templates at build time. Two options:
 
-1. **Use classes that already exist in .tsx files** — DaisyUI classes like `fieldset`, `input`, `btn`, `text-sm`, etc. are already in the CSS because other templates use them. This is the preferred approach.
+1. **Use classes that already exist in .tsx files** - DaisyUI classes like `fieldset`, `input`, `btn`, `text-sm`, etc. are already in the CSS because other templates use them. This is the preferred approach.
 
-2. **Add to safelist** — If your adapter needs a class not used anywhere else, add it to the `safelist` array in `uno.config.ts`:
+2. **Add to safelist** - If your adapter needs a class not used anywhere else, add it to the `safelist` array in `uno.config.ts`:
 
 ```ts
 export default defineConfig({

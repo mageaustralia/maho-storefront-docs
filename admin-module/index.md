@@ -52,7 +52,7 @@ The cron job (`storefront_process_queue`) runs every minute:
 
 ### Storefront API Client
 
-`Model/Api/Storefront.php` — communicates with the Cloudflare Worker:
+`Model/Api/Storefront.php` - communicates with the Cloudflare Worker:
 
 | Method | Endpoint | Purpose |
 |--------|----------|---------|
@@ -65,7 +65,7 @@ The cron job (`storefront_process_queue`) runs every minute:
 
 ### Cloudflare API Client
 
-`Model/Api/Cloudflare.php` — communicates directly with the Cloudflare API:
+`Model/Api/Cloudflare.php` - communicates directly with the Cloudflare API:
 
 | Method | Purpose |
 |--------|---------|
@@ -85,14 +85,14 @@ Overview of sync status, last sync time, KV key count, and recent activity log.
 
 ### Sync Controller
 Step-by-step sync interface:
-- **Quick Sync** — process pending queue items
-- **Full Sync** — re-sync all catalog data (products, categories, CMS, config)
-- **Selective Sync** — sync specific entity types
+- **Quick Sync** - process pending queue items
+- **Full Sync** - re-sync all catalog data (products, categories, CMS, config)
+- **Selective Sync** - sync specific entity types
 
 ### Cache Controller
-- **Purge URLs** — purge specific edge-cached URLs
-- **Purge All** — purge entire edge cache via Cloudflare API
-- **Delete KV Keys** — remove specific keys from KV
+- **Purge URLs** - purge specific edge-cached URLs
+- **Purge All** - purge entire edge cache via Cloudflare API
+- **Delete KV Keys** - remove specific keys from KV
 
 ### Onboard Controller
 Multi-step provisioning for new stores:

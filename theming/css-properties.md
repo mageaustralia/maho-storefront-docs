@@ -155,6 +155,6 @@ Store themes override the same properties under `[data-theme]`:
 }
 ```
 
-All components using these properties automatically adopt the new theme values — no per-component changes needed.
+All components using these properties automatically adopt the new theme values - no per-component changes needed.
 
 Source: `uno.config.ts`

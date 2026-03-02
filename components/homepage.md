@@ -1,8 +1,8 @@
 # Homepage Components
 
-Components for the homepage — hero banners, promotional grids, featured products, and marketing sections.
+Components for the homepage - hero banners, promotional grids, featured products, and marketing sections.
 
-![Homepage — header, navigation bar, and hero banner](/screenshots/homepage.png)
+![Homepage - header, navigation bar, and hero banner](/screenshots/homepage.png)
 
 ## Component Slots
 

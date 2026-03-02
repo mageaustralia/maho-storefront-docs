@@ -31,6 +31,7 @@ fallthrough = true
 |----------|------|----------|-------------|
 | `MAHO_API_URL` | string | Yes | Base URL of Maho backend |
 | `SYNC_SECRET` | string | Yes | Shared secret for /sync and /cache endpoints |
+| `DEV_SECRET` | string | No | Enables the [dev toolbar](/reference/dev-toolbar) and dev token authentication. If not set, the toolbar system is completely disabled. |
 | `DEMO_STORES` | string (JSON) | No | Hostname → store code mapping |
 
 ### KV Namespace
@@ -43,6 +44,24 @@ fallthrough = true
 ### Text Rules
 
 The `[[rules]]` section tells Wrangler to import `.css` and `.txt` files as text strings rather than JavaScript modules. This is how `public/styles.css` and `public/controllers.js.txt` get embedded in the Worker.
+
+### KV Configuration Keys
+
+In addition to cached catalog data, the `CONTENT` KV namespace stores configuration flags:
+
+| KV Key | Type | Description | Docs |
+|--------|------|-------------|------|
+| `config:password_gate` | boolean | Enable/disable the [password gate](/reference/password-gate) | [Password Gate](/reference/password-gate) |
+| `config:storefront_password` | string | Password visitors must enter when gate is active | [Password Gate](/reference/password-gate) |
+
+```bash
+# Enable password gate
+npx wrangler kv key put --namespace-id=YOUR_KV_ID "config:password_gate" "true"
+npx wrangler kv key put --namespace-id=YOUR_KV_ID "config:storefront_password" "my-secret"
+
+# Disable password gate
+npx wrangler kv key put --namespace-id=YOUR_KV_ID "config:password_gate" "false"
+```
 
 ## stores.json
 
@@ -72,7 +91,7 @@ Maps store codes to theme and page configuration files. Each store code correspo
 
 Full design token configuration. Each store can have its own theme file (`theme-tech.json`, `theme-brew-beyond.json`) that overrides the base `theme.json`.
 
-::: details Full theme.json example (Fashion Demo — default theme)
+::: details Full theme.json example (Fashion Demo - default theme)
 ```json
 {
   "name": "Fashion Demo",
@@ -172,7 +191,7 @@ Full design token configuration. Each store can have its own theme file (`theme-
 ```
 :::
 
-::: details theme-tech.json (TechZone — key differences highlighted)
+::: details theme-tech.json (TechZone - key differences highlighted)
 The tech theme uses **sharp corners** (`radii.xs: 2px`), **blue accent** (`#3b82f6`), **Space Grotesk headings**, and **bordered cards with shadows**:
 
 ```json
@@ -213,7 +232,7 @@ See [theme.json Reference](/theming/theme-json) for complete token documentation
 
 Controls which component variant renders for each page and slot. Each store can have its own page config.
 
-::: details Full page.json example (Fashion Demo — default)
+::: details Full page.json example (Fashion Demo - default)
 ```json
 {
   "pages": {
@@ -259,6 +278,11 @@ Controls which component variant renders for each page and slot. Each store can 
       "showRecommendations": true,
       "showProgressBar": true
     },
+    "engagement": {
+      "components": {
+        "newsletter": "popup"
+      }
+    },
     "header": { "variant": "centered" },
     "footer": { "variant": "mega" },
     "homepage": {
@@ -278,7 +302,7 @@ Controls which component variant renders for each page and slot. Each store can 
 ```
 :::
 
-::: details page-tech.json (TechZone — key differences)
+::: details page-tech.json (TechZone - key differences)
 The tech store uses **standard cards** (not minimal), **tabbed product info** (not accordion), **mega header**, **standard footer**, and a **fullwidth hero**:
 
 ```json

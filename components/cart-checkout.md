@@ -14,7 +14,7 @@ Components for the shopping cart and checkout flow.
 
 ### Cart Drawer (DrawerSlide)
 
-The default cart interaction — a slide-out panel from the right side:
+The default cart interaction - a slide-out panel from the right side:
 
 ```
 ┌───────────────────────────┐

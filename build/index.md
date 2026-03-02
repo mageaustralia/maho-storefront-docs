@@ -52,10 +52,10 @@ The `ASSET_HASH` (in `src/asset-version.ts`) is a hash of the CSS + JS + page co
 2. Invalidates the edge cache version tag
 3. Forces browsers to fetch the new assets
 
-This means zero-downtime deployments — old cached pages reference old asset URLs (still served from the 1-year cache), while new pages reference new URLs.
+This means zero-downtime deployments - old cached pages reference old asset URLs (still served from the 1-year cache), while new pages reference new URLs.
 
 ## Next Steps
 
-- [UnoCSS](/build/unocss) — CSS generation details
-- [JavaScript Bundling](/build/esbuild) — esbuild configuration
-- [Maho CLI](/build/maho-cli) — `./maho storefront:build` command
+- [UnoCSS](/build/unocss) - CSS generation details
+- [JavaScript Bundling](/build/esbuild) - esbuild configuration
+- [Maho CLI](/build/maho-cli) - `./maho storefront:build` command

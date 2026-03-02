@@ -2,7 +2,7 @@
 
 The Maho Storefront uses a three-tier caching strategy to deliver sub-100ms responses globally while keeping content fresh.
 
-![Three-tier caching architecture — Browser → Cloudflare Edge (Edge Cache, KV Store, Hono Worker SSR) → Maho Backend (API Platform, MySQL)](/screenshots/cloudflare-architecture.webp)
+![Three-tier caching architecture - Browser → Cloudflare Edge (Edge Cache, KV Store, Hono Worker SSR) → Maho Backend (API Platform, MySQL)](/screenshots/cloudflare-architecture.webp)
 
 ## Cache Tiers
 
@@ -21,7 +21,7 @@ graph LR
 
 ### Tier 1: Cloudflare Edge Cache
 
-HTML responses are cached at each Cloudflare PoP (Point of Presence). Each PoP maintains its own cache — a cache in Sydney doesn't serve requests routed to Singapore.
+HTML responses are cached at each Cloudflare PoP (Point of Presence). Each PoP maintains its own cache - a cache in Sydney doesn't serve requests routed to Singapore.
 
 **TTLs by content type:**
 
@@ -74,7 +74,7 @@ All catalog data is stored in Cloudflare KV with store-prefixed keys:
 
 **TTL behavior:**
 
-- **Sync-written data** (via `/sync` endpoint): No TTL — persists until next sync
+- **Sync-written data** (via `/sync` endpoint): No TTL - persists until next sync
 - **Fallback-fetched data** (on KV miss): 24-hour TTL
 
 ### Tier 3: Origin API
@@ -114,7 +114,7 @@ curl -X POST https://your-store.com/cache/purge \
 
 ### Freshness Controller
 
-Client-side JavaScript checks if the currently displayed page is still fresh by comparing version fingerprints. If stale, a background revalidation is triggered — the user sees the cached version immediately, and the next request gets fresh content.
+Client-side JavaScript checks if the currently displayed page is still fresh by comparing version fingerprints. If stale, a background revalidation is triggered - the user sees the cached version immediately, and the next request gets fresh content.
 
 See [Freshness](/architecture/freshness) for details.
 
@@ -122,11 +122,11 @@ See [Freshness](/architecture/freshness) for details.
 
 User-specific pages are never cached at any tier:
 
-- `/cart` — Cart contents
-- `/checkout` — Checkout flow
-- `/account/*` — Account dashboard
-- `/search` — Search results
-- `/login`, `/register` — Authentication
+- `/cart` - Cart contents
+- `/checkout` - Checkout flow
+- `/account/*` - Account dashboard
+- `/search` - Search results
+- `/login`, `/register` - Authentication
 
 These routes always execute the Worker handler, hitting KV for catalog data but rendering with real-time cart/account state.
 

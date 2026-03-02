@@ -1,6 +1,6 @@
 # Component Variant System
 
-The Maho Storefront uses a slot-based component architecture where each UI element has multiple interchangeable variants. Which variant renders is controlled by `page.json` configuration — no code changes needed to swap a product card style or change the header layout.
+The Maho Storefront uses a slot-based component architecture where each UI element has multiple interchangeable variants. Which variant renders is controlled by `page.json` configuration - no code changes needed to swap a product card style or change the header layout.
 
 ## How It Works
 
@@ -24,13 +24,14 @@ Components are organized into 8 domains with 36+ slots:
 | Domain | Slots | Example Variants |
 |--------|-------|-----------------|
 | **product-display** | card, gallery, layout, variant-picker, price, tabs, badge, quantity-stepper, sticky-atc, stock-indicator, info-panel, breadcrumb, recently-viewed | CardStandard, CardMinimal, GalleryCarousel, GalleryGrid |
-| **product-utility** | wishlist-button, shipping-estimator, size-guide, notify-me, compare, delivery-date | — |
+| **product-utility** | wishlist-button, shipping-estimator, size-guide, notify-me, compare, delivery-date | - |
 | **cart** | drawer, line-item, summary, coupon-field, progress-bar | DrawerSlide |
-| **category** | grid, hero, toolbar, banner-inline, subcategory-tiles | — |
-| **filtering** | sidebar, price-range, sort-select, pagination, chip-bar | — |
-| **homepage** | hero, promo-grid, promo-banner, featured-products, icon-features, countdown-timer, shop-by-category, brand-logo-strip, collection-spotlight, promo-strip | — |
+| **category** | grid, hero, toolbar, banner-inline, subcategory-tiles | - |
+| **filtering** | sidebar, price-range, sort-select, pagination, chip-bar | - |
+| **homepage** | hero, promo-grid, promo-banner, featured-products, icon-features, countdown-timer, shop-by-category, brand-logo-strip, collection-spotlight, promo-strip | - |
 | **navigation** | header, footer, breadcrumb, mobile-drawer | HeaderSticky, FooterStandard |
-| **checkout** | address-form, order-summary, payment-block, step-indicator, trust-badges | — |
+| **engagement** | newsletter | NewsletterInline, NewsletterPopup, NewsletterPopupImage, NewsletterFlyout |
+| **checkout** | address-form, order-summary, payment-block, step-indicator, trust-badges | - |
 
 ## File Structure
 
@@ -117,7 +118,8 @@ Useful for tooling, documentation, and LLM context.
 
 ## Next Steps
 
-- [page.json Reference](/components/page-config) — configure variant selection
-- [Creating a Variant](/components/creating-a-variant) — add a new variant step by step
-- [Product Display](/components/product-display) — product cards, galleries, tabs
-- [Navigation](/components/navigation) — header and footer variants
+- [page.json Reference](/components/page-config) - configure variant selection
+- [Creating a Variant](/components/creating-a-variant) - add a new variant step by step
+- [Product Display](/components/product-display) - product cards, galleries, tabs
+- [Navigation](/components/navigation) - header and footer variants
+- [Newsletter](/components/newsletter) - inline, popup, flyout newsletter variants

@@ -84,7 +84,7 @@ During sync, data is written to KV with store-prefixed keys:
 
 ## Pulse Hash
 
-After every sync, the `pulse` KV key is updated with a new hash. This hash is combined with `ASSET_HASH` to form the edge cache version tag — any change in pulse automatically invalidates all edge-cached HTML pages.
+After every sync, the `pulse` KV key is updated with a new hash. This hash is combined with `ASSET_HASH` to form the edge cache version tag - any change in pulse automatically invalidates all edge-cached HTML pages.
 
 ## Product Sync Details
 

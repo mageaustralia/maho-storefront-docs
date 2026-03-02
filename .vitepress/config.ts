@@ -4,7 +4,7 @@ import { withMermaid } from 'vitepress-plugin-mermaid'
 export default withMermaid(
   defineConfig({
     title: 'Maho Storefront',
-    description: 'Documentation for the Maho Storefront — a headless commerce frontend on Cloudflare Workers',
+    description: 'Documentation for the Maho Storefront - a headless commerce frontend on Cloudflare Workers',
     head: [
       ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
     ],

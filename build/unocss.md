@@ -39,9 +39,9 @@ flowchart LR
 
 The `processDaisyCSS()` function:
 
-1. **Strips `@layer`** — UnoCSS manages its own layer system
-2. **Flattens bare `&{...}`** — Stack-based phantom brace tracking handles DaisyUI's shorthand
-3. **Preserves nesting** — `&:hover`, `&>.child`, `&:focus-visible` kept intact
+1. **Strips `@layer`** - UnoCSS manages its own layer system
+2. **Flattens bare `&{...}`** - Stack-based phantom brace tracking handles DaisyUI's shorthand
+3. **Preserves nesting** - `&:hover`, `&>.child`, `&:focus-visible` kept intact
 
 ## Theme Variable Generation
 

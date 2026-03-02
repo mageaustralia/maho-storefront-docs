@@ -15,9 +15,9 @@ bun run build:js
 
 | Option | Value | Purpose |
 |--------|-------|---------|
-| `--bundle` | — | Bundle all imports into one file |
-| `--minify` | — | Minify output (variable names, whitespace) |
-| `--format=esm` | — | Output as ES module |
+| `--bundle` | - | Bundle all imports into one file |
+| `--minify` | - | Minify output (variable names, whitespace) |
+| `--format=esm` | - | Output as ES module |
 | `--outfile` | `public/controllers.js.txt` | Output path |
 | `--external` | CDN URLs | Don't bundle CDN imports |
 
@@ -43,10 +43,10 @@ app.register('checkout', CheckoutController);
 
 The output includes:
 
-- **Stimulus runtime** (~8KB minified) — from `@hotwired/stimulus`
-- **19 controllers** (~30-40KB minified) — all application logic
-- **Supporting libraries** (~5-10KB) — api.js, utils.js, template-helpers.js, analytics.js
-- **Payment adapters** (~5KB) — Braintree integration
+- **Stimulus runtime** (~8KB minified) - from `@hotwired/stimulus`
+- **19 controllers** (~30-40KB minified) - all application logic
+- **Supporting libraries** (~5-10KB) - api.js, utils.js, template-helpers.js, analytics.js
+- **Payment adapters** (~5KB) - Braintree integration
 
 ## .js.txt Extension
 
@@ -62,7 +62,7 @@ The output uses `.js.txt` instead of `.js` because:
 CDN-loaded scripts (excluded from the bundle):
 
 ```javascript
-// Not bundled — loaded via <script> tag in HTML
+// Not bundled - loaded via <script> tag in HTML
 import 'https://cdn.jsdelivr.net/npm/braintree-web@3/client.min.js';
 ```
 

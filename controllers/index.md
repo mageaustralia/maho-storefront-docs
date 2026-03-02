@@ -1,6 +1,6 @@
 # Stimulus Controllers
 
-The Maho Storefront uses [Hotwire](https://hotwired.dev/) for client-side behaviour — [Turbo](https://turbo.hotwired.dev/) handles SPA-like page transitions (no full reloads between pages), and [Stimulus](https://stimulus.hotwired.dev/) controllers attach interactivity to server-rendered HTML via `data-controller` attributes. There's no client-side framework runtime.
+The Maho Storefront uses [Hotwire](https://hotwired.dev/) for client-side behaviour - [Turbo](https://turbo.hotwired.dev/) handles SPA-like page transitions (no full reloads between pages), and [Stimulus](https://stimulus.hotwired.dev/) controllers attach interactivity to server-rendered HTML via `data-controller` attributes. There's no client-side framework runtime.
 
 ## Architecture
 
@@ -110,7 +110,9 @@ Event bindings declared in HTML:
 | auth-state | `auth-state-controller.js` | ~70 | Auth state persistence |
 | mobile-menu | `mobile-menu-controller.js` | ~50 | Mobile navigation drawer |
 | contact | `contact-controller.js` | ~100 | Contact form submission |
-| newsletter | `newsletter-controller.js` | ~50 | Newsletter subscription |
+| newsletter | `newsletter-controller.js` | ~50 | Inline newsletter subscription (footer form) |
+| newsletter-popup | `newsletter-popup-controller.js` | ~75 | Modal/dialog newsletter popup with delay + localStorage dismiss |
+| newsletter-flyout | `newsletter-flyout-controller.js` | ~75 | Slide-in flyout newsletter card with dismiss + localStorage |
 | order-success | `order-success-controller.js` | ~50 | Post-purchase tracking |
 
 ## Supporting Libraries

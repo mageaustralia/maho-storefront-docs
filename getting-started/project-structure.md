@@ -3,7 +3,7 @@
 ```
 maho-storefront/
 ├── src/
-│   ├── index.tsx              # Main Hono app — routing, caching, SSR
+│   ├── index.tsx              # Main Hono app - routing, caching, SSR
 │   ├── api-client.ts          # Maho REST API wrapper
 │   ├── page-config.ts         # Variant resolver (page.json → component selection)
 │   ├── types.ts               # TypeScript type definitions
@@ -57,26 +57,26 @@ maho-storefront/
 
 ## Key Directories
 
-### `src/` — Application Source
+### `src/` - Application Source
 
-The core application. `index.tsx` is the entry point — a Hono app that handles routing, edge caching, and server-side rendering.
+The core application. `index.tsx` is the entry point - a Hono app that handles routing, edge caching, and server-side rendering.
 
-### `src/templates/components/` — Variant System
+### `src/templates/components/` - Variant System
 
 Organized by domain (product-display, navigation, cart, etc.). Each slot has:
-- `_manifest.json` — variant definitions
-- `index.tsx` — variant resolver
-- `VariantName.tsx` — individual variant implementations
+- `_manifest.json` - variant definitions
+- `index.tsx` - variant resolver
+- `VariantName.tsx` - individual variant implementations
 
 See [Component Variants](/components/) for details.
 
-### `src/js/controllers/` — Stimulus Controllers
+### `src/js/controllers/` - Stimulus Controllers
 
 Client-side behavior via Stimulus.js. Controllers attach to server-rendered HTML using `data-controller` attributes. See [Controllers](/controllers/) for details.
 
-### `src/css/` — Stylesheets
+### `src/css/` - Stylesheets
 
-Component-specific CSS loaded as UnoCSS preflights. Most styling comes from DaisyUI classes and UnoCSS utilities — these files handle complex component layouts.
+Component-specific CSS loaded as UnoCSS preflights. Most styling comes from DaisyUI classes and UnoCSS utilities - these files handle complex component layouts.
 
 ## Configuration Files
 

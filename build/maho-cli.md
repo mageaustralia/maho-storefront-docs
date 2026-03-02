@@ -1,4 +1,4 @@
-# Maho CLI — storefront:build
+# Maho CLI - storefront:build
 
 The Maho backend includes a CLI command that builds storefront assets using [Bun](https://bun.sh/). It auto-downloads Bun if not installed, runs CSS/JS builds, and optionally deploys to Cloudflare Workers with cache purging.
 
@@ -55,9 +55,9 @@ flowchart TD
 
 The command finds Bun in this order:
 
-1. **Project-local** — `.bun/bin/bun` in the storefront directory
-2. **System PATH** — globally installed `bun`
-3. **Auto-download** — downloads the correct binary from GitHub (Linux/macOS, x64/arm64)
+1. **Project-local** - `.bun/bin/bun` in the storefront directory
+2. **System PATH** - globally installed `bun`
+3. **Auto-download** - downloads the correct binary from GitHub (Linux/macOS, x64/arm64)
 
 Downloaded Bun is stored at `{storefront}/.bun/bin/bun` for future use.
 

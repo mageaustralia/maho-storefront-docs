@@ -2,7 +2,7 @@
 
 This guide walks through creating a new theme for a store.
 
-![Tech theme category page — different colors, fonts, and layout from the same codebase](/screenshots/category-tech.png)
+![Tech theme category page - different colors, fonts, and layout from the same codebase](/screenshots/category-tech.png)
 
 ## Step 1: Create a Theme File
 
@@ -114,7 +114,7 @@ bun run build:css
 bun run dev
 ```
 
-Visit your store URL — the theme resolves automatically from the hostname → store code → theme mapping.
+Visit your store URL - the theme resolves automatically from the hostname → store code → theme mapping.
 
 ## Step 6: Deploy
 

@@ -28,7 +28,7 @@ const client = new MahoApiClient(baseUrl: string, storeCode?: string)
 
 | Method | Parameters | Return Type | Description |
 |--------|------------|-------------|-------------|
-| `fetchCategories()` | — | `Category[]` | All active categories (auto-paginated) |
+| `fetchCategories()` | - | `Category[]` | All active categories (auto-paginated) |
 | `fetchCategory(urlKey)` | `string` | `Category \| null` | Single category by URL key |
 | `fetchCategoryById(id)` | `number` | `Category` | Single category by ID |
 | `fetchCategoryProducts(categoryId, page, itemsPerPage)` | `number, number, number` | `{ products, totalItems }` | Products in a category (paginated) |
@@ -43,9 +43,9 @@ const client = new MahoApiClient(baseUrl: string, storeCode?: string)
 | Method | Parameters | Return Type | Description |
 |--------|------------|-------------|-------------|
 | `fetchCmsPage(identifier)` | `string` | `CmsPage \| null` | CMS page by identifier |
-| `fetchAllCmsPages()` | — | `CmsPage[]` | All CMS pages |
+| `fetchAllCmsPages()` | - | `CmsPage[]` | All CMS pages |
 | `fetchCmsBlock(identifier)` | `string` | `{ identifier, content } \| null` | CMS block by identifier |
-| `fetchBlogPosts()` | — | `BlogPost[]` | All blog posts |
+| `fetchBlogPosts()` | - | `BlogPost[]` | All blog posts |
 | `fetchBlogPost(identifier)` | `string` | `BlogPost \| null` | Single blog post |
 
 ### URL Resolution

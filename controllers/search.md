@@ -31,8 +31,8 @@ The search controller manages the search bar, autocomplete suggestions, and sear
 
 ## Keyboard Navigation
 
-- **Arrow Down/Up** — Navigate through suggestions
-- **Enter** — Select highlighted suggestion or submit search
-- **Escape** — Close suggestions dropdown
+- **Arrow Down/Up** - Navigate through suggestions
+- **Enter** - Select highlighted suggestion or submit search
+- **Escape** - Close suggestions dropdown
 
 Source: `src/js/controllers/search-controller.js`

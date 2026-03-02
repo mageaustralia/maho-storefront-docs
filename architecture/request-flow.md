@@ -85,14 +85,14 @@ Edge cache keys include a version tag composed of two parts:
 {ASSET_HASH}.{pulseHash}
 ```
 
-- **ASSET_HASH** — Hash of CSS + JS + page configs. Changes when code is deployed.
-- **pulseHash** — Hash of the latest data sync timestamp from KV. Changes when catalog data is synced.
+- **ASSET_HASH** - Hash of CSS + JS + page configs. Changes when code is deployed.
+- **pulseHash** - Hash of the latest data sync timestamp from KV. Changes when catalog data is synced.
 
 When either changes, all edge-cached pages automatically become stale, forcing a re-render with fresh data and assets.
 
 ## ETag Revalidation
 
-Browser requests include `If-None-Match` headers. The Worker checks if the content version matches — if so, it returns `304 Not Modified` instead of the full HTML body, saving bandwidth.
+Browser requests include `If-None-Match` headers. The Worker checks if the content version matches - if so, it returns `304 Not Modified` instead of the full HTML body, saving bandwidth.
 
 ## Rate Limiting
 

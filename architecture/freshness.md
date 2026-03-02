@@ -13,7 +13,7 @@ sequenceDiagram
     participant API as Maho API
 
     Note over B: Page loads from edge cache
-    B->>FC: connect() — read version from DOM
+    B->>FC: connect() - read version from DOM
     FC->>W: POST /freshness {type, id, version}
     W->>W: Check throttle (Cache API)
 
@@ -63,7 +63,7 @@ The freshness check is invisible to users:
 
 1. User sees the edge-cached page immediately (fast)
 2. Freshness controller runs in the background (non-blocking)
-3. If stale, an API call is made to Maho and the **DOM is replaced in-place** if the data has changed — the current user sees the update without a reload
+3. If stale, an API call is made to Maho and the **DOM is replaced in-place** if the data has changed - the current user sees the update without a reload
 4. Data is updated in KV and edge cache is busted
 5. The **next** visitor to that URL gets the fresh version server-rendered
 
@@ -82,13 +82,13 @@ Worst case: content is ~60 seconds stale. Best case: content is always fresh (no
 
 Freshness is a **safety net**, not the primary update mechanism.
 
-The primary path for keeping data current is the [Maho admin module](/admin-module/) — any product, category, or CMS save in Maho triggers an observer that queues a KV update. A cron job processes the queue every minute, pushing changes directly to Cloudflare KV via the `/sync` endpoint. This means **KV should never be stale under normal operation**.
+The primary path for keeping data current is the [Maho admin module](/admin-module/) - any product, category, or CMS save in Maho triggers an observer that queues a KV update. A cron job processes the queue every minute, pushing changes directly to Cloudflare KV via the `/sync` endpoint. This means **KV should never be stale under normal operation**.
 
 Freshness exists to catch edge cases:
 
-- **Edge cache staleness** — HTML is cached per PoP with TTLs of 30 min to 4 hours. Even though KV has the latest data, a PoP may be serving an old HTML render. The freshness controller detects this and triggers a re-render.
-- **Missed syncs** — If the cron queue fails or a sync is delayed, freshness catches the discrepancy.
-- **External data changes** — Changes made outside the admin (direct DB edits, API imports) won't trigger observers.
+- **Edge cache staleness** - HTML is cached per PoP with TTLs of 30 min to 4 hours. Even though KV has the latest data, a PoP may be serving an old HTML render. The freshness controller detects this and triggers a re-render.
+- **Missed syncs** - If the cron queue fails or a sync is delayed, freshness catches the discrepancy.
+- **External data changes** - Changes made outside the admin (direct DB edits, API imports) won't trigger observers.
 
 In practice: KV is kept current by observer-driven sync, edge cache is kept current by freshness checks, and both work together for sub-minute propagation.
 

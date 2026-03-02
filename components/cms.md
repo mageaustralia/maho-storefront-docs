@@ -15,7 +15,7 @@ CMS pages are stored in KV and rendered with a standard content template. The HT
 </article>
 ```
 
-The `prose` class (from UnoCSS typography preset) styles raw HTML content with proper typography — headings, paragraphs, lists, tables, images, and links all get sensible defaults.
+The `prose` class (from UnoCSS typography preset) styles raw HTML content with proper typography - headings, paragraphs, lists, tables, images, and links all get sensible defaults.
 
 ### CMS Page Template
 

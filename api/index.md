@@ -1,6 +1,6 @@
 # Worker API
 
-The Maho Storefront Worker exposes several internal API endpoints for data synchronization, cache management, and client-side operations. These are not public APIs — they're used by the admin module, freshness controller, and internal tooling.
+The Maho Storefront Worker exposes several internal API endpoints for data synchronization, cache management, and client-side operations. These are not public APIs - they're used by the admin module, freshness controller, and internal tooling.
 
 ## Endpoint Categories
 
@@ -46,7 +46,7 @@ These endpoints proxy to the Maho REST API with appropriate headers.
 
 ## Next Steps
 
-- [Routes](/api/routes) — complete route table
-- [Sync](/api/sync) — data synchronization reference
-- [Cache Management](/api/cache-management) — cache invalidation endpoints
-- [API Client](/api/api-client) — `MahoApiClient` class reference
+- [Routes](/api/routes) - complete route table
+- [Sync](/api/sync) - data synchronization reference
+- [Cache Management](/api/cache-management) - cache invalidation endpoints
+- [API Client](/api/api-client) - `MahoApiClient` class reference

@@ -1,6 +1,6 @@
 # Category & Filter Controller
 
-The category filter controller manages product listing pages — filtering, sorting, price ranges, pagination, and mobile filter UI.
+The category filter controller manages product listing pages - filtering, sorting, price ranges, pagination, and mobile filter UI.
 
 **Source:** `src/js/controllers/category-filter-controller.js` (~900 lines)
 
@@ -61,7 +61,7 @@ The dual-thumb price range slider:
 
 - Two `<input type="range">` elements overlaid on a shared track
 - CSS custom properties position the fill between the thumbs
-- Debounced input — waits 300ms after the user stops dragging before fetching
+- Debounced input - waits 300ms after the user stops dragging before fetching
 - Supports both slider interaction and manual min/max text input
 
 ## Mobile Filter UX

@@ -2,9 +2,9 @@
 
 ## Prerequisites
 
-- **Maho** — a running Maho instance with the REST API enabled
-- **Cloudflare account** — free tier works for development
-- **Node.js 18+** or **Bun** — for building assets
+- **Maho** - a running Maho instance with the REST API enabled
+- **Cloudflare account** - free tier works for development
+- **Node.js 18+** or **Bun** - for building assets
 
 ## Quick Start
 
@@ -82,7 +82,7 @@ id = "your-kv-namespace-id"
 
 ### 5. Build & Deploy
 
-Using the Maho CLI (recommended — reads credentials from admin config):
+Using the Maho CLI (recommended - reads credentials from admin config):
 
 ```bash
 ./maho storefront:build --deploy
@@ -141,7 +141,7 @@ It auto-detects the storefront path (looks for `maho-storefront/` next to your w
 bun run dev
 ```
 
-Starts Wrangler's local dev server at `http://localhost:8787`. Uses local KV simulation — run a sync to populate data:
+Starts Wrangler's local dev server at `http://localhost:8787`. Uses local KV simulation - run a sync to populate data:
 
 ```bash
 curl -X POST http://localhost:8787/sync \

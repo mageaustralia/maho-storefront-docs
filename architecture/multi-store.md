@@ -73,7 +73,7 @@ By default all stores share a single Maho backend (`MAHO_API_URL`). For multi-do
 ]
 ```
 
-When `apiUrl` is omitted, the store falls back to the global `MAHO_API_URL` binding. This keeps single-backend setups simple — just omit `apiUrl` from all entries.
+When `apiUrl` is omitted, the store falls back to the global `MAHO_API_URL` binding. This keeps single-backend setups simple - just omit `apiUrl` from all entries.
 
 The per-store API URL is used for:
 - All API client requests (product, category, CMS, blog fetches)
@@ -111,7 +111,7 @@ setRenderStore(storeCode);
 const variant = getVariant('product', 'gallery'); // Uses store's page config
 ```
 
-The render context is a module-level variable — set once per request, read by all components during synchronous SSR.
+The render context is a module-level variable - set once per request, read by all components during synchronous SSR.
 
 ## Theme Switching
 
@@ -153,7 +153,7 @@ Pre-baked themes only set colors. They inherit the default theme's fonts, typogr
 ## Adding a New Store
 
 1. Add the store code and configuration to `stores.json`
-2. Choose a theme — use a pre-baked theme name or create a `theme-{name}.json`
+2. Choose a theme - use a pre-baked theme name or create a `theme-{name}.json`
 3. Create a page config (`page-{name}.json`) if needed
 4. Add hostname → store code mapping to the store registry
 5. Sync data for the new store: `POST /sync` (will fetch data for all registered stores)

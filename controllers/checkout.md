@@ -1,6 +1,6 @@
 # Checkout Controller
 
-The checkout controller manages the multi-step checkout flow — shipping address, shipping method, payment, and order placement.
+The checkout controller manages the multi-step checkout flow - shipping address, shipping method, payment, and order placement.
 
 **Source:** `src/js/controllers/checkout-controller.js` (~1000 lines)
 
@@ -56,9 +56,9 @@ After address entry:
 
 Payment methods loaded from the API. The controller supports:
 
-- **Braintree** — Hosted fields (card number, CVV, expiry) via iframe
-- **PayPal** — Redirect to PayPal flow
-- **Other** — Extensible payment adapter pattern
+- **Braintree** - Hosted fields (card number, CVV, expiry) via iframe
+- **PayPal** - Redirect to PayPal flow
+- **Other** - Extensible payment adapter pattern
 
 Payment adapters are in `src/js/payment-methods/`:
 

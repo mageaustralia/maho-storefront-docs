@@ -14,7 +14,7 @@ flowchart LR
     Utilities --> UI
 ```
 
-1. **Define tokens** in `theme.json` — colors, fonts, spacing, radii, shadows
+1. **Define tokens** in `theme.json` - colors, fonts, spacing, radii, shadows
 2. **Build step** reads tokens and generates CSS custom properties in `:root`
 3. **DaisyUI components** consume semantic color tokens (`--color-primary`, etc.)
 4. **UnoCSS utilities** use the same tokens for consistency
@@ -76,7 +76,7 @@ Runtime switching: `document.documentElement.setAttribute('data-theme', 'tech')`
 
 ## Next Steps
 
-- [theme.json Reference](/theming/theme-json) — full token documentation
-- [Creating a Theme](/theming/creating-a-theme) — step-by-step guide
-- [CSS Properties](/theming/css-properties) — generated CSS variable mapping
-- [DaisyUI Integration](/theming/daisyui) — how DaisyUI v5 is integrated
+- [theme.json Reference](/theming/theme-json) - full token documentation
+- [Creating a Theme](/theming/creating-a-theme) - step-by-step guide
+- [CSS Properties](/theming/css-properties) - generated CSS variable mapping
+- [DaisyUI Integration](/theming/daisyui) - how DaisyUI v5 is integrated

@@ -1,6 +1,6 @@
 # Product Controller
 
-The product controller manages the product detail page — variant selection, gallery interaction, pricing updates, and add-to-cart functionality.
+The product controller manages the product detail page - variant selection, gallery interaction, pricing updates, and add-to-cart functionality.
 
 **Source:** `src/js/controllers/product-controller.js` (~800 lines)
 

@@ -1,8 +1,8 @@
 # Category Components
 
-Components for category listing pages — product grids, filtering, toolbars, and category-specific features.
+Components for category listing pages - product grids, filtering, toolbars, and category-specific features.
 
-![Category page — sidebar filters, product grid, header navigation](/screenshots/category.png)
+![Category page - sidebar filters, product grid, header navigation](/screenshots/category.png)
 
 ## Component Slots
 
@@ -55,7 +55,7 @@ The filter sidebar displays layered navigation attributes (color, size, brand, p
 | Type | UI | Example |
 |------|-----|---------|
 | Attribute | Checkbox list | Color: Red, Blue, Green |
-| Price Range | Dual-thumb slider + inputs | $10 — $200 |
+| Price Range | Dual-thumb slider + inputs | $10 - $200 |
 | Category | Linked list | Subcategory navigation |
 
 ### URL-Based Filtering
@@ -75,9 +75,9 @@ Optional hero banner at the top of category pages. Supports:
 ## Toolbar
 
 Top-of-grid toolbar with:
-- **Sort select** — Price (low/high), Name (A-Z/Z-A), Newest
-- **Result count** — "Showing 1-24 of 142 products"
-- **View toggle** — Grid vs. list view (where both card variants exist)
+- **Sort select** - Price (low/high), Name (A-Z/Z-A), Newest
+- **Result count** - "Showing 1-24 of 142 products"
+- **View toggle** - Grid vs. list view (where both card variants exist)
 
 ## Configuration
 

@@ -76,7 +76,7 @@ To prevent excessive origin API calls, the Worker throttles freshness checks:
 
 ## Impact on Performance
 
-The freshness controller runs asynchronously after page load — it never blocks rendering. Users see the cached version immediately. If the data is stale, the controller fetches fresh data from the Maho API and **replaces the DOM in-place** — so the current user sees the update without a page reload. Simultaneously, the Worker updates KV and busts the edge cache so the next visitor gets the fresh version server-rendered.
+The freshness controller runs asynchronously after page load - it never blocks rendering. Users see the cached version immediately. If the data is stale, the controller fetches fresh data from the Maho API and **replaces the DOM in-place** - so the current user sees the update without a page reload. Simultaneously, the Worker updates KV and busts the edge cache so the next visitor gets the fresh version server-rendered.
 
 This means content updates propagate to the **current user within seconds**, and to all subsequent visitors within ~60 seconds.
 

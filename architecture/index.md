@@ -46,13 +46,13 @@ graph TB
 
 ### Edge-First Rendering
 
-Every catalog page is rendered as static HTML at the Cloudflare edge. There is no client-side framework runtime — Stimulus controllers attach behavior to server-rendered DOM elements.
+Every catalog page is rendered as static HTML at the Cloudflare edge. There is no client-side framework runtime - Stimulus controllers attach behavior to server-rendered DOM elements.
 
 ### Three-Tier Caching
 
-1. **Edge Cache** (~1ms) — HTML responses cached per PoP with version-tagged keys
-2. **KV Store** (~10-50ms) — Catalog data (products, categories, config) cached globally
-3. **Origin API** (~100-300ms) — Maho backend, hit only on KV miss or revalidation
+1. **Edge Cache** (~1ms) - HTML responses cached per PoP with version-tagged keys
+2. **KV Store** (~10-50ms) - Catalog data (products, categories, config) cached globally
+3. **Origin API** (~100-300ms) - Maho backend, hit only on KV miss or revalidation
 
 See [Caching](/architecture/caching) for the full strategy.
 
@@ -72,7 +72,7 @@ See [Multi-Store](/architecture/multi-store) for details.
 
 | File | Lines | Description |
 |------|-------|-------------|
-| `src/index.tsx` | ~700 | Main app — routes, middleware, caching |
+| `src/index.tsx` | ~700 | Main app - routes, middleware, caching |
 | `src/api-client.ts` | ~200 | Maho REST API wrapper |
 | `src/page-config.ts` | ~115 | Component variant resolver |
 | `src/types.ts` | ~310 | TypeScript type definitions |

@@ -1,6 +1,6 @@
 # Deployment
 
-The Maho Storefront deploys to Cloudflare Workers. A deployment updates the Worker code and static assets — catalog data is managed separately via sync.
+The Maho Storefront deploys to Cloudflare Workers. A deployment updates the Worker code and static assets - catalog data is managed separately via sync.
 
 ## Quick Deploy
 
@@ -31,7 +31,7 @@ flowchart LR
 bun run build
 ```
 
-Generates `public/styles.css` and `public/controllers.js.txt`. These are embedded in the Worker as text modules — no separate asset upload needed.
+Generates `public/styles.css` and `public/controllers.js.txt`. These are embedded in the Worker as text modules - no separate asset upload needed.
 
 ### 2. Deploy Worker
 
@@ -40,7 +40,7 @@ bun run deploy
 # Runs: wrangler deploy
 ```
 
-Wrangler uploads the Worker with all bundled assets to Cloudflare. The deployment is instant and zero-downtime — the new Worker handles requests immediately.
+Wrangler uploads the Worker with all bundled assets to Cloudflare. The deployment is instant and zero-downtime - the new Worker handles requests immediately.
 
 ### 3. Sync Data (if needed)
 
@@ -54,7 +54,7 @@ curl -X POST https://your-store.com/sync \
 
 ### 4. Purge Edge Cache (optional)
 
-Normally unnecessary — the `ASSET_HASH` change automatically invalidates edge caches. For immediate propagation:
+Normally unnecessary - the `ASSET_HASH` change automatically invalidates edge caches. For immediate propagation:
 
 ```bash
 curl -X POST "https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/purge_cache" \
