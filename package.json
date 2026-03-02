@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vitepress dev",
     "build": "vitepress build",
-    "preview": "vitepress preview"
+    "preview": "vitepress preview",
+    "deploy": "npm run build && wrangler pages deploy .vitepress/dist --project-name maho-storefront-docs --branch main"
   },
   "devDependencies": {
     "vitepress": "^1.6.3",

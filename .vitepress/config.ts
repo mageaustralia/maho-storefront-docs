@@ -3,6 +3,7 @@ import { withMermaid } from 'vitepress-plugin-mermaid'
 
 export default withMermaid(
   defineConfig({
+    srcExclude: ['plans/**', 'PAYMENT-METHODS.md', 'STACK.md', 'THEME.md'],
     title: 'Maho Storefront',
     description: 'Documentation for the Maho Storefront - a headless commerce frontend on Cloudflare Workers',
     head: [

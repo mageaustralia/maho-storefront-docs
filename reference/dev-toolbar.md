@@ -2,8 +2,6 @@
 
 The dev toolbar is a developer-only overlay that shows performance metrics, cache status, and quick actions. It renders as a fixed dark bar at the bottom of the page.
 
-![Dev Toolbar Screenshot](../assets/dev-toolbar.png)
-
 ## Accessing the Toolbar
 
 The toolbar is only visible to authenticated dev sessions. To log in:
