@@ -193,7 +193,7 @@ interface CmsPage {
   imageUrl?: string
   metaKeywords?: string
   metaDescription?: string
-  rootTemplate: string      // Page layout — 'one_column', 'two_columns_left', etc. Always present, defaults to 'one_column' when unset in DB
+  pageLayout: string        // Page layout — 'one_column', 'two_columns_left', etc. Always present, defaults to 'one_column' when unset in DB
   status: number
   createdAt?: string
   updatedAt?: string
