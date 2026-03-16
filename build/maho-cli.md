@@ -75,8 +75,9 @@ After each build, file sizes are reported in human-readable format.
 ### 3. Deploy (with `--deploy`)
 
 1. Reads Cloudflare credentials from `deploy.sh` in the storefront directory
-2. Runs `bun x wrangler deploy -c wrangler.demo-only.toml`
-3. Purges Cloudflare edge cache for all configured demo hosts
+2. Runs `bun x wrangler deploy -c wrangler.toml`
+3. Purges Cloudflare edge cache for all configured hosts
+4. Prewarms the edge cache (if `WARM_HOSTS` is configured)
 
 ### Storefront Path Resolution
 
@@ -103,10 +104,9 @@ bun run build
 # Deploy
 bun run deploy
 
-# Sync data
+# Sync data from Maho backend to KV
 curl -X POST https://your-store.com/sync \
-  -H "Content-Type: application/json" \
-  -d '{"secret": "your-sync-secret"}'
+  -H "Authorization: Bearer YOUR_SYNC_SECRET"
 ```
 
 ## Deploy Script
@@ -118,8 +118,16 @@ The `deploy.sh` script handles deployment to demo environments:
 ```
 
 This script:
-1. Runs `bun run build` (CSS + JS)
-2. Deploys via `wrangler deploy --config wrangler.demo-only.toml`
-3. Purges Cloudflare edge cache for all demo hostnames
+1. Runs `bun run build` (CSS + JS + plugin registry generation)
+2. Deploys via `bun x wrangler deploy --config wrangler.toml`
+3. Purges Cloudflare edge cache for all configured hostnames
+4. Prewarms the edge cache by fetching all known URLs (categories, products, CMS pages, blog posts)
+
+Cache warming is optional -- set `WARM_HOSTS` and `SYNC_SECRET` in `.env`:
+
+```bash
+SYNC_SECRET="your-sync-secret"
+WARM_HOSTS='["https://your-store.com"]'
+```
 
 Source: `lib/MahoCLI/Commands/StorefrontBuild.php`, `deploy.sh`, `package.json`

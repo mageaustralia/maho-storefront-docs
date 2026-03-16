@@ -37,6 +37,7 @@ export default withMermaid(
             { text: 'Caching', link: '/architecture/caching' },
             { text: 'Freshness', link: '/architecture/freshness' },
             { text: 'Multi-Store', link: '/architecture/multi-store' },
+            { text: 'Plugins', link: '/architecture/plugins' },
             { text: 'Analytics', link: '/architecture/analytics' },
           ],
         },

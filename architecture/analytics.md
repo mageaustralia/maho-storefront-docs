@@ -70,17 +70,17 @@ First, create the triggers. Go to **Zaraz** > **Triggers** > **Create trigger** 
 
 | Trigger name | Rule type | Variable | Operator | Value |
 |---|---|---|---|---|
-| `E-commerce: search` | Match rule | `{{ client.__zarazTrack }}` | Equals | `search` |
-| `E-commerce: view_item` | Match rule | `{{ client.__zarazTrack }}` | Equals | `view_item` |
-| `E-commerce: view_item_list` | Match rule | `{{ client.__zarazTrack }}` | Equals | `view_item_list` |
-| `E-commerce: add_to_cart` | Match rule | `{{ client.__zarazTrack }}` | Equals | `add_to_cart` |
-| `E-commerce: remove_from_cart` | Match rule | `{{ client.__zarazTrack }}` | Equals | `remove_from_cart` |
-| `E-commerce: begin_checkout` | Match rule | `{{ client.__zarazTrack }}` | Equals | `begin_checkout` |
-| `E-commerce: add_shipping_info` | Match rule | `{{ client.__zarazTrack }}` | Equals | `add_shipping_info` |
-| `E-commerce: add_payment_info` | Match rule | `{{ client.__zarazTrack }}` | Equals | `add_payment_info` |
-| `E-commerce: purchase` | Match rule | `{{ client.__zarazTrack }}` | Equals | `purchase` |
+| `E-commerce: search` | Match rule | ``client.__zarazTrack`` | Equals | `search` |
+| `E-commerce: view_item` | Match rule | ``client.__zarazTrack`` | Equals | `view_item` |
+| `E-commerce: view_item_list` | Match rule | ``client.__zarazTrack`` | Equals | `view_item_list` |
+| `E-commerce: add_to_cart` | Match rule | ``client.__zarazTrack`` | Equals | `add_to_cart` |
+| `E-commerce: remove_from_cart` | Match rule | ``client.__zarazTrack`` | Equals | `remove_from_cart` |
+| `E-commerce: begin_checkout` | Match rule | ``client.__zarazTrack`` | Equals | `begin_checkout` |
+| `E-commerce: add_shipping_info` | Match rule | ``client.__zarazTrack`` | Equals | `add_shipping_info` |
+| `E-commerce: add_payment_info` | Match rule | ``client.__zarazTrack`` | Equals | `add_payment_info` |
+| `E-commerce: purchase` | Match rule | ``client.__zarazTrack`` | Equals | `purchase` |
 
-The `{{ client.__zarazTrack }}` variable matches the `event` property from `window.dataLayer.push({ event: 'purchase', ... })`.
+The ``client.__zarazTrack`` variable matches the `event` property from `window.dataLayer.push({ event: 'purchase', ... })`.
 
 #### Step 3: Create GA4 Actions
 
