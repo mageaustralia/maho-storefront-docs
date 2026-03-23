@@ -25,7 +25,7 @@ Checkout Controller (core - never edited for payments)
         '-- destroy()         -> Cleans up
 ```
 
-Bundled adapters are imported in `src/js/payment-methods/index.js`. Standalone plugins register at runtime via `window.MahoStorefront.registerPaymentAdapter()`.
+All payment adapters are **standalone plugins** that self-register at runtime via `window.MahoStorefront.registerPaymentAdapter()`. No core files need editing to add a payment gateway.
 
 ## The Adapter Interface
 
@@ -362,5 +362,5 @@ Payment adapters render HTML at runtime, so UnoCSS can't scan their templates at
 
 | Type | File | Gateway | Method Code |
 |------|------|---------|-------------|
-| Bundled | `src/js/payment-methods/braintree-adapter.js` | Braintree (Hosted Fields) | `gene_braintree_creditcard` |
-| Plugin | `public/plugins/stripe-payment.js` | Stripe (Elements) | `stripe_card` |
+| Plugin | `public/plugins/braintree-payment.js` | Braintree (Hosted Fields) | `gene_braintree_creditcard` |
+| Plugin | `public/plugins/stripe-payment.js` | Stripe (Elements + Google Pay + Apple Pay) | `stripe_card` |
