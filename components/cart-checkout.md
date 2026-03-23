@@ -147,7 +147,7 @@ Payment methods are handled by the adapter system (`src/js/payment-methods/`). B
 - **Stripe Link** -- email authentication element (single-page: `initEarly()` hook)
 - **Braintree** -- hosted fields
 
-Payment adapters are registered via `window.MahoStorefront.registerPaymentAdapter()` and loaded as standalone plugin scripts. See [Payment Methods](/PAYMENT-METHODS) for details.
+Payment adapters are registered via `window.MahoStorefront.registerPaymentAdapter()` and loaded as standalone plugin scripts. See the Payment Methods guide (`PAYMENT-METHODS.md`) for details.
 
 ## Checkout Sub-Components
 
