@@ -91,6 +91,7 @@ export default withMermaid(
             { text: 'Sync', link: '/api/sync' },
             { text: 'Cache Management', link: '/api/cache-management' },
             { text: 'API Client', link: '/api/api-client' },
+            { text: 'Extending Resources', link: '/api/extending-resources' },
           ],
         },
         {

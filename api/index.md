@@ -11,6 +11,10 @@ The Maho Storefront Worker exposes several internal API endpoints for data synch
 | [Freshness](/architecture/freshness) | `POST /freshness` | Background revalidation |
 | [Proxy](/api/routes) | `GET /media/*`, `GET /robots.txt`, `GET /sitemap.xml` | Proxy to backend |
 
+## Extending Maho API Resources
+
+PHP modules can enrich API responses (categories, products, store config) without touching core files using the `extensions` map pattern. See [Extending Resources](/api/extending-resources).
+
 ## Authentication
 
 Internal endpoints use a shared secret passed in the request body:
