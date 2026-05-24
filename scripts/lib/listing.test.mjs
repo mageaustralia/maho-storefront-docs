@@ -39,3 +39,20 @@ test('parseListing throws ListingError when a feature_block lacks a heading', ()
   const bad = 'slug: x\ntagline: "t"\nfeature_blocks:\n  - body: "b"\n';
   assert.throws(() => parseListing(bad), ListingError);
 });
+
+test('parseListing throws when tagline is missing', () => {
+  assert.throws(() => parseListing('slug: x'), ListingError);
+});
+
+test('parseListing throws when feature_blocks is not a sequence', () => {
+  assert.throws(() => parseListing('slug: x\ntagline: "t"\nfeature_blocks: "oops"'), ListingError);
+});
+
+test('parseListing throws when a gallery entry is not a string', () => {
+  assert.throws(() => parseListing('slug: x\ntagline: "t"\ngallery:\n  - 123'), ListingError);
+});
+
+test('parseListing normalises pricing_note to pricingNote', () => {
+  const r = parseListing('slug: x\ntagline: "t"\npricing_note: "Pay once."');
+  assert.equal(r.pricingNote, 'Pay once.');
+});
