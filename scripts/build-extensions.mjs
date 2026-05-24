@@ -13,7 +13,8 @@ async function main() {
   const manifestPath = join(DOCS_ROOT, 'extensions.manifest.yml');
   const exts = parseManifest(await readFile(manifestPath, 'utf8'));
 
-  // Clean generated trees so removed extensions don't linger.
+  // These trees are 100% generated - never hand-author here. Clean so removed
+  // extensions don't linger.
   for (const dir of ['extensions', 'public/extensions', 'data/extensions']) {
     await rm(join(DOCS_ROOT, dir), { recursive: true, force: true });
   }
@@ -22,6 +23,8 @@ async function main() {
   for (const ext of exts) {
     const srcDir = resolve(dirname(manifestPath), ext.source.path);
     if (!existsSync(srcDir)) throw new Error(`source not found for ${ext.slug}: ${srcDir}`);
+    const screenshotsDir = join(srcDir, 'screenshots');
+    if (!existsSync(screenshotsDir)) throw new Error(`screenshots/ not found for ${ext.slug}: ${screenshotsDir}`);
 
     // 1. Manual page.
     const guide = await readFile(join(srcDir, 'USER_GUIDE.md'), 'utf8');
@@ -30,13 +33,14 @@ async function main() {
     await writeFile(join(DOCS_ROOT, 'extensions', `${ext.slug}.md`), page);
 
     // 2. Screenshots -> public.
-    await cp(join(srcDir, 'screenshots'), join(DOCS_ROOT, 'public/extensions', ext.slug), { recursive: true });
+    await cp(screenshotsDir, join(DOCS_ROOT, 'public/extensions', ext.slug), { recursive: true });
 
     // 3. Product-page marketing JSON.
     const listing = parseListing(await readFile(join(srcDir, 'listing.yml'), 'utf8'));
     const toAsset = (p) => p.replace(/^screenshots\//, `/extensions/${ext.slug}/`);
     const productJson = {
       slug: ext.slug,
+      name: ext.name,
       composerPackage: ext.composerPackage,
       tier: ext.tier,
       category: ext.category,
@@ -54,7 +58,7 @@ async function main() {
     await mkdir(join(DOCS_ROOT, 'data/extensions'), { recursive: true });
     await writeFile(join(DOCS_ROOT, 'data/extensions', `${ext.slug}.json`), JSON.stringify(productJson, null, 2));
 
-    index.push({ slug: ext.slug, title: ext.slug, tier: ext.tier, category: ext.category, link: `/extensions/${ext.slug}` });
+    index.push({ slug: ext.slug, title: ext.name, tier: ext.tier, category: ext.category, link: `/extensions/${ext.slug}` });
     console.log(`synced ${ext.slug}`);
   }
 

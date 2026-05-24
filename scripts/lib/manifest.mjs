@@ -23,13 +23,14 @@ export function parseManifest(src) {
   if (!Array.isArray(list) || list.length === 0) {
     throw new ManifestError('manifest has no "extensions" list');
   }
-  return list.map((e, i) => {
+  const out = list.map((e, i) => {
     const ctx = `extensions[${i}]`;
     const tier = reqString(e, 'tier', ctx);
     if (!TIERS.has(tier)) throw new ManifestError(`${ctx}: tier must be free|paid, got "${tier}"`);
     const path = reqString(e.source ?? {}, 'path', `${ctx}.source`);
     return {
       slug: reqString(e, 'slug', ctx),
+      name: reqString(e, 'name', ctx),
       composerPackage: reqString(e, 'composer_package', ctx),
       tier,
       category: reqString(e, 'category', ctx),
@@ -38,4 +39,10 @@ export function parseManifest(src) {
       source: { path },
     };
   });
+  const seen = new Set();
+  for (const e of out) {
+    if (seen.has(e.slug)) throw new ManifestError(`duplicate slug "${e.slug}"`);
+    seen.add(e.slug);
+  }
+  return out;
 }

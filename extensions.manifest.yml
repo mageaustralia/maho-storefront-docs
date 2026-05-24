@@ -2,6 +2,7 @@
 # source.path is resolved relative to this file (local checkout for now; git pull in CI later).
 extensions:
   - slug: followup-email
+    name: "Follow-up Email"
     composer_package: mageaustralia/maho-module-followup-email
     tier: paid
     category: "Checkout & Conversion"
