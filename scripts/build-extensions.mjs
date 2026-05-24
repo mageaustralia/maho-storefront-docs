@@ -63,6 +63,17 @@ async function main() {
   }
 
   await writeFile(join(DOCS_ROOT, 'data/extensions/_index.json'), JSON.stringify(index, null, 2));
+
+  const landing = [
+    '# Extension Manuals',
+    '',
+    'User guides for every Mage Australia extension. Each manual is available online and as a downloadable PDF. Modules are Composer-installable - pay once, updates included.',
+    '',
+    ...index.map((e) => `- **[${e.title}](${e.link})** - ${e.category} ([PDF](/pdf/${e.slug}.pdf))`),
+    '',
+  ].join('\n');
+  await writeFile(join(DOCS_ROOT, 'extensions', 'index.md'), landing);
+
   console.log(`done: ${index.length} extension(s)`);
 }
 

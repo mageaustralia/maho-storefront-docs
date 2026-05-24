@@ -1,36 +1,28 @@
 ---
 layout: home
 hero:
-  name: Maho Storefront
-  text: Headless Commerce on the Edge
-  tagline: A high-performance, themeable storefront built on Cloudflare Workers, Hono.js, and DaisyUI v5
+  name: "Mage Australia"
+  text: "Extensions for Maho, fully documented."
+  tagline: "Self-hosted, Composer-installable extensions. Pay once, updates included - no monthly SaaS tax."
   actions:
     - theme: brand
-      text: Get Started
-      link: /getting-started/
+      text: Browse extension manuals
+      link: /extensions/
     - theme: alt
-      text: Architecture
-      link: /architecture/
+      text: Maho Storefront docs
+      link: /getting-started/
 features:
-  - icon: "⚡"
-    title: Edge-First Performance
-    details: Sub-100ms responses via Cloudflare Workers with three-tier caching (edge, KV, origin) and automatic freshness revalidation.
-  - icon: "🎨"
-    title: Themeable Design System
-    details: JSON-driven theming with DaisyUI v5 + UnoCSS. Change colors, typography, spacing, and component variants per store - no CSS required.
-  - icon: "🧩"
-    title: Component Variants
-    details: 36 component slots across 8 domains with swappable variants. Configure which card, header, footer, and gallery style each store uses via page.json.
-  - icon: "🏪"
-    title: Multi-Store Architecture
-    details: One Worker serves multiple stores with isolated themes, configs, and catalog data - all resolved at the edge from a single deployment.
-  - icon: "🔌"
-    title: Hotwire (Turbo + Stimulus)
-    details: SPA-like page transitions via Turbo with 19 Stimulus controllers for interactivity. No framework runtime - just declarative behavior on server-rendered HTML.
-  - icon: "🔄"
-    title: Real-Time Freshness
-    details: Background freshness checks keep edge-cached pages up to date without sacrificing performance. New products appear within minutes.
-  - icon: "🤖"
-    title: Agent Ready
-    details: Built for AI agents from the ground up. Curated llms.txt, RFC 9727 API catalog, OAuth discovery, content-signal robots, KV-driven sitemap with lastmod, markdown content negotiation, and an MCP server card.
+  - icon: 📚
+    title: Extension manuals
+    details: Step-by-step user guides, with downloadable PDFs, for every Mage Australia extension.
+    link: /extensions/
+    linkText: Browse all manuals
+  - icon: 🚀
+    title: Maho Storefront
+    details: Our open-source headless storefront - high-performance commerce on Cloudflare Workers, Hono.js and DaisyUI v5. Full developer docs for building on it.
+    link: /getting-started/
+    linkText: Storefront docs
+  - icon: 📦
+    title: Composer-first
+    details: One command to install. Free modules from Packagist; paid modules via your licensed Composer token.
 ---
