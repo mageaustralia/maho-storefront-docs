@@ -18,3 +18,21 @@ test('leaves absolute image urls untouched', () => {
   const md = '![x](https://cdn/x.png)';
   assert.equal(rewriteManual(md, { slug: 's', githubUrl: 'g' }), md);
 });
+
+test('wraps inline code containing {{ }} in <code v-pre> so Vue does not interpolate it', () => {
+  const md = 'use `{{var coupon_code}}` in the template';
+  const out = rewriteManual(md, { slug: 's', githubUrl: 'g' });
+  assert.equal(out, 'use <code v-pre>{{var coupon_code}}</code> in the template');
+});
+
+test('leaves inline code without braces as a normal backtick span', () => {
+  const md = 'run `composer require x`';
+  const out = rewriteManual(md, { slug: 's', githubUrl: 'g' });
+  assert.equal(out, 'run `composer require x`');
+});
+
+test('html-escapes <, >, & inside a protected code span', () => {
+  const md = '`{{if a < b}}`';
+  const out = rewriteManual(md, { slug: 's', githubUrl: 'g' });
+  assert.equal(out, '<code v-pre>{{if a &lt; b}}</code>');
+});
