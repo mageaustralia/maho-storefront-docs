@@ -14,6 +14,10 @@ Every page is server-rendered at the edge - the nearest Cloudflare PoP (200+ loc
 
 Full server-side rendering means search engines receive complete, crawlable HTML on every request - no JavaScript required to see content. Combined with proper semantic markup, structured data (Schema.org), and canonical URLs, the storefront is optimised for search engine indexing from the ground up.
 
+### 4. Agent Ready
+
+Built to be **read and transacted on by AI agents**, not just by humans and search-engine crawlers. The storefront publishes a curated `/llms.txt` reading list, RFC 9727 API catalog, RFC 8414 OAuth discovery, content-signal `/robots.txt`, KV-driven `/sitemap.xml` with `<lastmod>`, an MCP server card, and markdown content negotiation on every catalogue page — see [Agent Readiness](/agents/) for the full surface.
+
 ## Prerequisites
 
 - **Bun** (auto-installed by `./maho storefront:build`, or [install manually](https://bun.sh/))
@@ -46,3 +50,4 @@ The local dev server runs at `http://localhost:8787` using Wrangler's local mode
 - [Project Structure](/getting-started/project-structure) - understand the codebase layout
 - [Architecture Overview](/architecture/) - how the system works end-to-end
 - [Deployment](/getting-started/deployment) - deploy to Cloudflare Workers
+- [Agent Readiness](/agents/) - the AI-agent surface every storefront ships

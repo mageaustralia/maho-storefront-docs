@@ -4,11 +4,23 @@
 maho-storefront/
 ├── src/
 │   ├── index.tsx              # Main Hono app - routing, caching, SSR
-│   ├── api-client.ts          # Maho REST API wrapper
+│   ├── api-client.ts          # Maho REST API wrapper (paths under /api/rest/v2/)
 │   ├── page-config.ts         # Variant resolver (page.json → component selection)
 │   ├── types.ts               # TypeScript type definitions
-│   ├── content-store.ts       # KV abstraction layer
+│   ├── content-store.ts       # KV abstraction layer (with tracked timing)
 │   ├── asset-version.ts       # Cache-bust hash generation
+│   ├── dev-auth.ts            # Password gate, dev tokens, preview, toolbar
+│   ├── content-rewriter.ts    # Rewrites backend URLs in content to storefront origin
+│   ├── agents/                # Agent-readiness surface
+│   │   ├── api-catalog.ts     # RFC 9727 linkset
+│   │   ├── llms-txt.ts        # llmstxt.org reading list
+│   │   ├── markdown.ts        # Accept: text/markdown middleware + renderers
+│   │   ├── mcp-server-card.ts # MCP discovery card + stub /mcp body
+│   │   ├── oauth-discovery.ts # RFC 8414 OAuth descriptor
+│   │   ├── robots-txt.ts      # Content Signals + AI-bot rules
+│   │   └── sitemap.ts         # KV-driven sitemap with <lastmod>
+│   ├── plugins/
+│   │   └── filterable-pages/  # Brand pages, megamenu, dependent filters
 │   ├── css/                   # CSS source files
 │   │   ├── product.css        # Product page styles
 │   │   ├── cart.css           # Cart & checkout styles
@@ -22,9 +34,9 @@ maho-storefront/
 │   │   ├── template-helpers.js # DOM hydration utilities
 │   │   ├── analytics.js       # Event tracking
 │   │   ├── payment-methods/   # Payment adapter implementations
-│   │   └── controllers/       # 19 Stimulus controllers
+│   │   └── controllers/       # Stimulus controllers
 │   └── templates/
-│       ├── Layout.tsx          # Base HTML layout
+│       ├── Layout.tsx          # Base HTML layout (+ <link rel="alternate"> to /llms.txt)
 │       ├── Home.tsx            # Homepage template
 │       ├── Product.tsx         # Product detail page
 │       ├── Category.tsx        # Category listing page

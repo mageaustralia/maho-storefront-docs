@@ -51,6 +51,7 @@ The following routes bypass the password gate and are always accessible:
 - `/dev/login`, `/dev/logout`, `/dev/preview` - dev toolbar routes
 - `/media/*`, `/public/*` - media files
 - `/sitemap*`, `/robots.txt`, `/favicon.ico` - SEO files
+- `/llms.txt`, `/.well-known/*`, `/mcp` - [agent-readiness surface](/agents/)
 
 ## Relationship to Dev Toolbar
 

@@ -195,7 +195,21 @@ These are handled by the Worker directly, not proxied to the backend.
 | `/controllers.js` | GET | 1 year (immutable) | esbuild JS bundle (versioned via `?v=`) |
 | `/plugins/:name` | GET | 24 hours | Payment plugin scripts |
 | `/media/*` | GET | 1 year (immutable) | Product/media images proxied from backend |
-| `/robots.txt` | GET | 1 hour | Proxied from backend |
-| `/sitemap.xml` | GET | 1 hour | Proxied from backend |
 
-Source: `src/index.tsx`
+## Agent-Readiness Endpoints
+
+Served by the storefront for AI agents, crawlers, and discovery tooling. See [Agent Readiness](/agents/) for full details on each endpoint.
+
+| Route | Method | Cache | Description |
+|-------|--------|-------|-------------|
+| `/llms.txt` | GET | 1 hour | Curated reading list ([llmstxt.org](https://llmstxt.org/) format), generated from KV |
+| `/robots.txt` | GET | 1 hour | Storefront-owned, with Content Signals (`search=yes, ai-input=yes, ai-train=no`) |
+| `/sitemap.xml` | GET | 1 hour | Generated from KV (categories + products + CMS + blog) with `<lastmod>` from each entity's `updatedAt` |
+| `/.well-known/api-catalog` | GET | 1 hour | RFC 9727 linkset pointing at OpenAPI + OAuth + MCP discovery |
+| `/.well-known/oauth-authorization-server` | GET | 1 hour | RFC 8414 OAuth 2.0 Authorization Server Metadata |
+| `/.well-known/mcp/server-card.json` | GET | 1 hour | MCP discovery card (currently `status: "planned"`) |
+| `/mcp` | ALL | 5 min | Stub until the dedicated MCP Worker ships — returns 503 + structured "coming soon" |
+
+Every HTML response also carries `Link: </.well-known/api-catalog>; rel="api-catalog"`. Any catalogue page accepts `Accept: text/markdown` or the `/index.md` / `.md` path suffix to return a token-cheap markdown rendering instead of HTML.
+
+Source: `src/index.tsx`, `src/agents/*.ts`

@@ -16,6 +16,7 @@ export default withMermaid(
         { text: 'Architecture', link: '/architecture/' },
         { text: 'Components', link: '/components/' },
         { text: 'API', link: '/api/' },
+        { text: 'Agents', link: '/agents/' },
       ],
       sidebar: [
         {
@@ -92,6 +93,15 @@ export default withMermaid(
             { text: 'Cache Management', link: '/api/cache-management' },
             { text: 'API Client', link: '/api/api-client' },
             { text: 'Extending Resources', link: '/api/extending-resources' },
+          ],
+        },
+        {
+          text: 'Agent Readiness',
+          collapsed: false,
+          items: [
+            { text: 'Overview', link: '/agents/' },
+            { text: 'Endpoints Reference', link: '/agents/endpoints' },
+            { text: 'MCP Server', link: '/agents/mcp' },
           ],
         },
         {

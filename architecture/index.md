@@ -68,13 +68,22 @@ A single Worker deployment serves multiple stores. Each store has its own theme,
 
 See [Multi-Store](/architecture/multi-store) for details.
 
+### Agent Readiness
+
+Every storefront ships an AI-agent-facing surface: `/llms.txt`, content-signal `/robots.txt`, KV-driven `/sitemap.xml` with `<lastmod>`, `/.well-known/api-catalog` (RFC 9727), `/.well-known/oauth-authorization-server` (RFC 8414), `/.well-known/mcp/server-card.json`, and markdown content negotiation on every catalogue page. A dedicated MCP server (sibling Worker) is in progress for agent-driven transactions.
+
+See [Agent Readiness](/agents/) for details.
+
 ## Source Files
 
 | File | Lines | Description |
 |------|-------|-------------|
-| `src/index.tsx` | ~700 | Main app - routes, middleware, caching |
-| `src/api-client.ts` | ~200 | Maho REST API wrapper |
-| `src/page-config.ts` | ~115 | Component variant resolver |
-| `src/types.ts` | ~310 | TypeScript type definitions |
-| `src/content-store.ts` | ~37 | KV abstraction layer |
+| `src/index.tsx` | ~3000 | Main app — routes, middleware, caching, gates |
+| `src/api-client.ts` | ~400 | Maho REST API wrapper (paths under `/api/rest/v2/`) |
+| `src/page-config.ts` | ~150 | Component variant resolver |
+| `src/types.ts` | ~400 | TypeScript type definitions |
+| `src/content-store.ts` | ~50 | KV abstraction layer (with tracked timing for dev toolbar) |
 | `src/asset-version.ts` | ~24 | Cache-bust hash |
+| `src/dev-auth.ts` | ~600 | Password gate, dev tokens, preview, toolbar |
+| `src/agents/*.ts` | ~700 total | Agent-readiness surface (llms.txt, robots, sitemap, well-known, markdown) |
+| `src/plugins/filterable-pages/` | — | Brand pages, megamenu, dependent filters |

@@ -9,7 +9,8 @@ The Maho Storefront Worker exposes several internal API endpoints for data synch
 | [Sync](/api/sync) | `POST /sync`, `POST /sync/:type` | Populate KV from Maho backend |
 | [Cache](/api/cache-management) | `POST /cache/update`, `POST /cache/purge`, `POST /cache/delete` | Manage cached data |
 | [Freshness](/architecture/freshness) | `POST /freshness` | Background revalidation |
-| [Proxy](/api/routes) | `GET /media/*`, `GET /robots.txt`, `GET /sitemap.xml` | Proxy to backend |
+| [Proxy](/api/routes) | `GET /media/*` | Proxy media files to backend |
+| [Agents](/agents/) | `GET /llms.txt`, `GET /robots.txt`, `GET /sitemap.xml`, `GET /.well-known/*` | Agent-readiness surface (storefront-generated, not proxied) |
 
 ## Extending Maho API Resources
 

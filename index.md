@@ -30,4 +30,7 @@ features:
   - icon: "🔄"
     title: Real-Time Freshness
     details: Background freshness checks keep edge-cached pages up to date without sacrificing performance. New products appear within minutes.
+  - icon: "🤖"
+    title: Agent Ready
+    details: Built for AI agents from the ground up. Curated llms.txt, RFC 9727 API catalog, OAuth discovery, content-signal robots, KV-driven sitemap with lastmod, markdown content negotiation, and an MCP server card.
 ---
