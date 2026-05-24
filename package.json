@@ -3,8 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vitepress dev",
-    "build": "vitepress build",
+    "docs:sync": "node scripts/build-extensions.mjs",
+    "docs:pdf": "node scripts/extensions-pdf.mjs",
+    "dev": "npm run docs:sync && vitepress dev",
+    "build": "npm run docs:sync && vitepress build && npm run docs:pdf",
     "preview": "vitepress preview",
     "deploy": "npm run build && wrangler pages deploy .vitepress/dist --project-name maho-storefront-docs --branch main"
   },

@@ -1,5 +1,16 @@
 import { defineConfig } from 'vitepress'
 import { withMermaid } from 'vitepress-plugin-mermaid'
+import { readFileSync, existsSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+
+const extIndexPath = fileURLToPath(new URL('../data/extensions/_index.json', import.meta.url))
+const extIndex: { slug: string; title: string; link: string }[] =
+  existsSync(extIndexPath) ? JSON.parse(readFileSync(extIndexPath, 'utf8')) : []
+const extensionsSidebar = {
+  text: 'Extensions',
+  collapsed: false,
+  items: extIndex.map((e) => ({ text: e.title, link: e.link })),
+}
 
 export default withMermaid(
   defineConfig({
@@ -17,8 +28,10 @@ export default withMermaid(
         { text: 'Components', link: '/components/' },
         { text: 'API', link: '/api/' },
         { text: 'Agents', link: '/agents/' },
+        { text: 'Extensions', link: extIndex[0] ? extIndex[0].link : '/' },
       ],
       sidebar: [
+        extensionsSidebar,
         {
           text: 'Getting Started',
           collapsed: false,
