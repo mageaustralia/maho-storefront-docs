@@ -10,8 +10,8 @@ const extIndex: { slug: string; title: string; link: string }[] =
 export default withMermaid(
   defineConfig({
     srcExclude: ['plans/**', 'PAYMENT-METHODS.md', 'STACK.md', 'THEME.md'],
-    title: 'Maho Storefront',
-    description: 'Documentation for the Maho Storefront - a headless commerce frontend on Cloudflare Workers',
+    title: 'Mage Australia',
+    description: 'Mage Australia extension manuals and Maho Storefront developer docs',
     head: [
       ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
     ],

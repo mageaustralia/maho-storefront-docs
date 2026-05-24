@@ -31,7 +31,7 @@ async function main() {
     console.log('no built extensions/ - run vitepress build first'); return;
   }
   const slugs = (await readdir(join(DIST, 'extensions')))
-    .filter((f) => f.endsWith('.html'))
+    .filter((f) => f.endsWith('.html') && f !== 'index.html')
     .map((f) => f.replace(/\.html$/, ''));
   if (slugs.length === 0) { console.log('no extension pages to render'); return; }
 
