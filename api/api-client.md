@@ -60,9 +60,12 @@ All requests include:
 
 ```
 Accept: application/ld+json
-X-Worker-Auth: maho-storefront-sync-626538104ee3e0ef
+X-Worker-Auth: <WORKER_AUTH>   # shared secret from env, set per-deployment
 X-Store-Code: {storeCode}  (if provided)
 ```
+
+The `X-Worker-Auth` value is a per-deployment secret supplied via the
+`WORKER_AUTH` environment binding — it is never hardcoded in source.
 
 ## Pagination
 
