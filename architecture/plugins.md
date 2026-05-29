@@ -1,14 +1,29 @@
 # Plugin System
 
-Maho Storefront has a plugin architecture that lets extensions add UI components, Stimulus controllers, and SDK scripts without modifying any core files. This means:
+Maho Storefront has a plugin architecture that lets extensions add functionality — UI components, Stimulus controllers, SDK scripts, **server routes, and data-sync hooks** — without living in the core. This means:
 
 - Upgrading the storefront core never conflicts with your plugins
 - Upgrading a plugin never requires patching core files
-- Removing a plugin is as simple as deleting its directory
+- Removing a plugin is (close to) as simple as deleting its directory
 
-## How It Works
+Every plugin lives in its own directory under `src/plugins/<name>/`.
 
-Plugins live in `src/plugins/<name>/` and are auto-discovered at **build time**. A build script scans for plugin manifests, generates a registry, and esbuild bundles everything statically. No runtime filesystem access is needed (Cloudflare Workers has no filesystem).
+## Two extension surfaces
+
+A plugin extends the storefront through one or both of these surfaces:
+
+| Surface | What it adds | Wiring | Examples |
+|---------|--------------|--------|----------|
+| **Manifest** (auto-discovered) | SSR slot components, Stimulus controllers, `<head>` scripts | Zero core edits — discovered at build time from a `PluginManifest` default export | `social-login` |
+| **Server** (manually wired) | HTTP routes, `/sync` data hooks | One `register…Routes(app, deps)` call + one `sync…()` call in `src/index.tsx` | `stripe`, `filterable-pages` |
+
+A plugin can use both. `filterable-pages` ships a manifest (its megamenu slot + controllers) **and** server routes + a sync hook. The `stripe` plugin is server-only (its UI is a client script served as a static asset — see [Payment plugins](#payment-plugins)).
+
+The rest of this page covers the **manifest** surface first (the zero-config path), then the **server** surface.
+
+## Manifest plugins (auto-discovered)
+
+Manifest plugins live in `src/plugins/<name>/` and are auto-discovered at **build time**. A build script (`scripts/generate-plugin-registry.js`, run by `npm run generate` as part of `npm run build`) scans every `src/plugins/*/index.ts` for a `PluginManifest` default export, generates a registry, and esbuild bundles everything statically. No runtime filesystem access is needed (Cloudflare Workers has no filesystem).
 
 ```
 src/plugins/
@@ -209,6 +224,120 @@ The social login plugin (`src/plugins/social-login/`) is a complete reference im
 - Head scripts use `when()` to only load Google SDK if Google is enabled, etc.
 - The controller is registered automatically — no edits to `app.js`
 - Zero core file modifications needed
+
+## Server-side plugins (routes & sync)
+
+Some plugins need to run code on the server — handle an HTTP route, or pull data
+from the Maho backend during a sync. The `PluginManifest` doesn't cover this
+(it's SSR/client only), so server plugins export plain functions that the worker
+entry wires in explicitly. This is the same dependency-injection pattern the
+core uses for its own route modules.
+
+A server plugin's `index.ts` is a **barrel** that re-exports:
+
+- a `register<Name>Routes(app, deps)` function — registers its routes on the Hono app
+- (optional) a `sync<Name>(...)` function — called inside the core `/sync` loop
+- (optional) small config readers used by core endpoints
+
+```ts
+// src/plugins/my-plugin/index.ts
+export { registerMyPluginRoutes } from './routes';
+export { syncMyPlugin } from './sync';
+```
+
+```ts
+// src/plugins/my-plugin/routes.ts
+import type { Hono } from 'hono';
+import type { Env, StorefrontStore } from '../../types';
+
+// Core-owned helpers the plugin needs are passed IN — the plugin never reaches
+// back into index.tsx. This keeps the dependency direction one-way.
+export interface MyPluginDeps {
+  getStoreContext: (c: any) => Promise<{ stores: StorefrontStore[]; currentStoreCode: string | undefined }>;
+  getApiUrl: (env: Env, stores: StorefrontStore[], storeCode?: string) => string;
+}
+
+export function registerMyPluginRoutes(app: Hono<any>, deps: MyPluginDeps): void {
+  app.get('/api/my-plugin/thing', async (c) => {
+    // ...
+    return c.json({ ok: true });
+  });
+}
+```
+
+### Wiring it into the worker
+
+Server plugins are **not** auto-discovered — registering a route has ordering
+and dependency implications, so it's an explicit two-line wiring in
+`src/index.tsx`:
+
+```ts
+import { registerMyPluginRoutes, syncMyPlugin } from './plugins/my-plugin';
+
+// near the other route registrations:
+registerMyPluginRoutes(app, { getStoreContext, getApiUrl });
+
+// inside the per-store loop of the POST /sync handler:
+await syncMyPlugin({ apiUrl: getApiUrl(c.env, stores, storeCode), config, store, prefix });
+```
+
+That's the whole core footprint — two call sites. Everything else lives in the
+plugin directory, so the plugin can be removed by deleting its folder and those
+two lines.
+
+::: tip Why not auto-discover routes too?
+Route registration order matters (e.g. the catch-all URL resolver must be last),
+and routes often need core helpers (`getStoreContext`, rate limiting, the API
+client). Explicit wiring keeps both under the author's control and the
+dependency direction one-way (plugin depends on core, never the reverse).
+:::
+
+## Payment plugins
+
+Payment methods are a specialised kind of plugin with three parts:
+
+1. **A client script** served as a static asset at `/plugins/<name>-payment.js`
+   (built from `public/plugins/<name>-payment.js.txt`). It registers a payment
+   adapter (see `src/js/payment-methods/`) that the checkout controller drives.
+2. **A server sync hook** that, during `/sync`, asks the Maho backend for this
+   method's config and registers it in `config.extensions.paymentPlugins`:
+   ```ts
+   config.extensions.paymentPlugins.push({
+     code: 'stripe',
+     script: '/plugins/stripe-payment.js',     // client adapter to load
+     config: { STRIPE_PUBLISHABLE_KEY: '…' },  // PUBLIC values only
+   });
+   ```
+   The storefront renders the registered scripts on checkout; the client adapter
+   reads its `config` block. **Only publishable/public values go here** — secrets
+   never reach `paymentPlugins`.
+3. **(If the method authorises server-side) a route + a KV-stored secret.** The
+   secret is written to KV (e.g. `${prefix}stripe:secretKey`) during sync and
+   read only on the server.
+
+### Real-World Example: Stripe
+
+The Stripe plugin (`src/plugins/stripe/`) is the reference server/payment plugin.
+Stripe is **not** part of core — it's entirely contained here:
+
+- `routes.ts` → `registerStripeRoutes(app, deps)` — `POST /api/payments/stripe/payment-intents`
+  (+ CORS preflight). Creates a Stripe PaymentIntent (`capture_method=manual`)
+  from the Maho cart total. **No-ops** (falls through) when no secret key is
+  configured, so a store without the Maho Stripe module is unaffected.
+- `sync.ts` → `syncStripeConfig(...)` — on `/sync`, fetches `/api/payments/stripe/config`
+  from the backend, registers the `stripe` payment plugin (publishable key), and
+  stores the secret key in KV for PaymentIntent creation.
+- `config.ts` → `getStripePublishableKey(config)` — reader used by the embed
+  products endpoint to surface the public key.
+- `index.ts` — barrel; `INTEGRATION.md` — plugin-local integration notes.
+
+The client side (`public/plugins/stripe-payment.js.txt`) was already plugin-shaped
+and is unchanged. Core's total footprint is the two wiring lines in `index.tsx`
+plus the one `getStripePublishableKey` reader.
+
+**Backend requirement:** the Maho Stripe module exposing
+`GET /api/payments/stripe/config` (returns `{ publishableKey, secretKey }`; the
+secret is only returned when the request carries `X-Storefront-Sync: <SYNC_SECRET>`).
 
 ## Manifest Reference
 
