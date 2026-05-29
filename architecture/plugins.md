@@ -350,11 +350,14 @@ The client side (`public/plugins/stripe-payment.js.txt`) was already plugin-shap
 and is unchanged. Core's total footprint is the two wiring lines in `index.tsx`,
 the one `getStripePublishableKey` reader, and one line in the CSP aggregator.
 
-::: warning Embed widget — pending
+::: tip Embed widget — payment adapters
 The standalone **embed widget** (`src/embed/*`, a separate IIFE bundle for
-third-party sites) still uses Stripe directly in its checkout flow. Moving that
-behind a plugin-provided payment adapter is a separate, planned follow-up (the
-"embed plugin refactor") and is **not** yet done.
+third-party sites) is its own runtime, so it can't use the storefront plugin
+registry. It applies the **same principle** with a local `PaymentAdapter`
+interface (`src/embed/payments/`): the checkout flow is gateway-agnostic and
+mounts whatever adapter matches the selected method (`createPaymentAdapter`).
+Stripe lives in `src/embed/payments/stripe.ts` as one adapter — adding a gateway
+is a new adapter module + one registry line, with no change to the checkout flow.
 :::
 
 **Backend requirement:** the Maho Stripe module exposing
