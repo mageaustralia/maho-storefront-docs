@@ -294,7 +294,7 @@ dependency direction one-way (plugin depends on core, never the reverse).
 
 ## Payment plugins
 
-Payment methods are a specialised kind of plugin with three parts:
+Payment methods are a specialised kind of plugin with up to four parts:
 
 1. **A client script** served as a static asset at `/plugins/<name>-payment.js`
    (built from `public/plugins/<name>-payment.js.txt`). It registers a payment
@@ -314,6 +314,20 @@ Payment methods are a specialised kind of plugin with three parts:
 3. **(If the method authorises server-side) a route + a KV-stored secret.** The
    secret is written to KV (e.g. `${prefix}stripe:secretKey`) during sync and
    read only on the server.
+4. **CSP sources it owns.** A plugin that loads a third-party SDK declares the
+   Content-Security-Policy sources it needs in its own `csp.ts`, and registers
+   them in the aggregator `src/plugins/csp.ts`. The `security-headers`
+   middleware folds those into the base policy — so gateway domains are **not**
+   hardcoded in core, and removing the plugin removes its CSP footprint:
+   ```ts
+   // src/plugins/stripe/csp.ts
+   export const STRIPE_CSP: PluginCsp = {
+     scriptSrc: ['https://js.stripe.com'],
+     connectSrc: ['https://api.stripe.com'],
+     frameSrc: ['https://js.stripe.com', 'https://hooks.stripe.com'],
+   };
+   // src/plugins/csp.ts → const CONTRIBUTIONS = [STRIPE_CSP];  // one line per plugin
+   ```
 
 ### Real-World Example: Stripe
 
@@ -329,11 +343,19 @@ Stripe is **not** part of core — it's entirely contained here:
   stores the secret key in KV for PaymentIntent creation.
 - `config.ts` → `getStripePublishableKey(config)` — reader used by the embed
   products endpoint to surface the public key.
+- `csp.ts` → `STRIPE_CSP` — the CSP sources Stripe needs, merged via `src/plugins/csp.ts`.
 - `index.ts` — barrel; `INTEGRATION.md` — plugin-local integration notes.
 
 The client side (`public/plugins/stripe-payment.js.txt`) was already plugin-shaped
-and is unchanged. Core's total footprint is the two wiring lines in `index.tsx`
-plus the one `getStripePublishableKey` reader.
+and is unchanged. Core's total footprint is the two wiring lines in `index.tsx`,
+the one `getStripePublishableKey` reader, and one line in the CSP aggregator.
+
+::: warning Embed widget — pending
+The standalone **embed widget** (`src/embed/*`, a separate IIFE bundle for
+third-party sites) still uses Stripe directly in its checkout flow. Moving that
+behind a plugin-provided payment adapter is a separate, planned follow-up (the
+"embed plugin refactor") and is **not** yet done.
+:::
 
 **Backend requirement:** the Maho Stripe module exposing
 `GET /api/payments/stripe/config` (returns `{ publishableKey, secretKey }`; the
