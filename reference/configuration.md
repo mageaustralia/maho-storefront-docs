@@ -30,9 +30,40 @@ fallthrough = true
 | Variable | Type | Required | Description |
 |----------|------|----------|-------------|
 | `MAHO_API_URL` | string | Yes | Base URL of Maho backend |
-| `SYNC_SECRET` | string | Yes | Shared secret for /sync and /cache endpoints |
+| `SYNC_SECRET` | string | Yes | Shared secret for /sync and /cache endpoints. Fails closed — an unset or placeholder value rejects all requests. |
 | `DEV_SECRET` | string | No | Enables the [dev toolbar](/reference/dev-toolbar) and dev token authentication. If not set, the toolbar system is completely disabled. |
-| `DEMO_STORES` | string (JSON) | No | Hostname → store code mapping |
+| `MAHO_API_BASIC_AUTH` | string | No | HTTP Basic auth (`user:pass`) for the backend, injected server-side when proxying. |
+| `STORES` | string (JSON) | No | Array of `{ code, name, url, apiUrl? }` defining the stores this Worker serves. |
+| `USE_CF_IMAGE_RESIZE` | string | No | `"1"`/`"true"` to emit responsive `srcset` via Cloudflare Image Resizing. Default off. See [Responsive images](#responsive-images) — **paid feature**. |
+
+### Responsive images {#responsive-images}
+
+Product images can be served as a responsive `srcset` (3 widths) using
+[Cloudflare Image Resizing](https://developers.cloudflare.com/images/transform-images/).
+It is **off by default** — when off, images render as a single `<img src>` with
+no transformations and no cost.
+
+To enable:
+
+1. Set `USE_CF_IMAGE_RESIZE = "1"` in the `[vars]` block for the target
+   environment and redeploy (the flag is read at request time, per deployment —
+   so you can enable it on one store and not another).
+2. Enable **Image Resizing** on the Cloudflare zone (dashboard → Speed →
+   Optimization → Image Resizing).
+
+::: warning Cost
+Cloudflare Image Resizing is a **paid** feature (~$0.50 per 1,000 unique
+transformations). The storefront limits each image to **3 widths** to cap the
+number of unique transforms. Leave it off unless the image-bandwidth savings
+justify the cost for that store.
+:::
+
+> Why Cloudflare and not the Maho backend? The backend's image-resize endpoint
+> requires HMAC-signed URLs that the edge Worker cannot generate, and the
+> product API's `image`/`small_image`/`thumbnail` roles point to the same
+> source file — so CF Image Resizing is the only storefront-side option. A
+> future backend change could return signed multi-width URLs as a free
+> alternative.
 
 ### KV Namespace
 
