@@ -2,6 +2,14 @@
 
 The storefront uses a **payment adapter pattern** - each payment gateway has its own adapter, and the checkout controller discovers them automatically. You never edit the checkout controller to add a payment method.
 
+> This page covers the **client-side** adapter (the checkout UI + tokenization).
+> The matching **server-side** piece — registering the gateway during `/sync`,
+> any server route, and the gateway's CSP sources — lives in the plugin under
+> `src/plugins/<gateway>/` (e.g. `stripe`, `braintree`). See
+> [Plugins → Payment plugins](/architecture/plugins#payment-plugins). The
+> standalone embed widget uses its own `PaymentAdapter` interface
+> (`src/embed/payments/`).
+
 There are two ways to add a payment adapter:
 
 | Approach | When to use | Requires rebuild? |
@@ -18,7 +26,7 @@ Checkout Controller (core - never edited for payments)
   getAdapter(methodCode)  <-- payment-methods/index.js
         |
         v
-  BraintreeAdapter (bundled) / StripeAdapter (plugin) / etc.
+  StripeAdapter / BraintreeAdapter / etc. (standalone plugins)
         |
         |-- init(container)   -> Loads SDK, renders fields
         |-- tokenize()        -> Returns { nonce, deviceData, ... }

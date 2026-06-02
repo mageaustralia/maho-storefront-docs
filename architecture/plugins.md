@@ -364,6 +364,26 @@ is a new adapter module + one registry line, with no change to the checkout flow
 `GET /api/payments/stripe/config` (returns `{ publishableKey, secretKey }`; the
 secret is only returned when the request carries `X-Storefront-Sync: <SYNC_SECRET>`).
 
+### Second example: Braintree
+
+`src/plugins/braintree/` is a leaner payment plugin (`gene_braintree_creditcard`):
+
+- `sync.ts` → `syncBraintreeConfig` — registers the `braintree` payment plugin on
+  `/sync` if the backend exposes `/api/payments/braintree/config`; no-ops otherwise.
+- `csp.ts` → `BRAINTREE_CSP` — Hosted Fields + Cardinal 3DS sources.
+- No server route and **no stored secret**: the client adapter fetches a
+  short-lived **client token** at runtime from `/api/payments/braintree/client-token`,
+  so there's nothing to persist in KV (unlike Stripe's publishable/secret split).
+- Client adapter: `public/plugins/braintree-payment.js`, served via `/plugins/:name`.
+
+So a payment plugin needs only as much server surface as its gateway requires —
+Stripe has a server route (PaymentIntent creation), Braintree has none.
+
+> **Backend caveat:** the module must be installed on the *same* backend the
+> store points at, and at a compatible Maho version — installing a module whose
+> API Platform resources need a newer Maho than the backend runs can break the
+> whole `/api/rest/v2` surface.
+
 ## Manifest Reference
 
 ```ts
