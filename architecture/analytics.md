@@ -64,15 +64,13 @@ Zaraz automatically reads `window.dataLayer` events, making it a drop-in listene
 4. Enter your GA4 Measurement ID (e.g. `G-DB59VKFGTM`)
 5. The default **Pageview** trigger is created automatically -- this handles `page_view` events
 
-::: danger Enable dataLayer compatibility — required for e-commerce events
-The storefront emits e-commerce events with `window.dataLayer.push({ event, ecommerce })`.
-Zaraz only forwards those when **Google's dataLayer compatibility** is enabled:
-**Zaraz** > **Settings** > toggle **"Enable Google's dataLayer compatibility"** on.
+::: danger Two Zaraz settings are required for e-commerce events
+The storefront emits canonical GA4 events: `window.dataLayer.push({ event, ecommerce: { items, value, currency, … } })`. Zaraz only picks these up when **both** of these are enabled under **Zaraz** > **Settings** > **Compatibility**:
 
-Without it, Zaraz still sends the automatic **pageview**, so you'll see page
-views in GA4 but **no `add_to_cart` / `view_cart` / `begin_checkout` / `purchase`
-events** — the exact symptom of a half-configured setup. The triggers in Step 2
-(which match on ``client.__zarazTrack``) never fire until this is on.
+1. **Data layer compatibility mode** — "Automatically convert `dataLayer` calls to `zaraz.track` calls". Without it, Zaraz ignores `dataLayer.push` entirely.
+2. **E-commerce tracking** — "Enable the Zaraz E-commerce Tracking API". This is what makes Zaraz read the **nested `ecommerce` object** and map `items`/`value`/`currency`/`transaction_id` into GA4's ecommerce reports. With it off, the event name may fire but the products and revenue are dropped — so purchases/add-to-cart appear empty or missing.
+
+The classic symptom of missing one (or both): **page views show in GA4 but no `add_to_cart` / `view_cart` / `begin_checkout` / `purchase`**. Also enable **Single Page Application support** so pageviews fire on Turbo navigation.
 :::
 
 #### Step 2: Create E-commerce Triggers
