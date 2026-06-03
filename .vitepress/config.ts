@@ -26,6 +26,7 @@ export default withMermaid(
             { text: 'Architecture', link: '/architecture/' },
             { text: 'Components', link: '/components/' },
             { text: 'API', link: '/api/' },
+            { text: 'Embed Widget', link: '/embed/' },
             { text: 'Agents', link: '/agents/' },
           ],
         },
@@ -110,6 +111,13 @@ export default withMermaid(
               { text: 'Cache Management', link: '/api/cache-management' },
               { text: 'API Client', link: '/api/api-client' },
               { text: 'Extending Resources', link: '/api/extending-resources' },
+            ],
+          },
+          {
+            text: 'Embed Widget',
+            collapsed: true,
+            items: [
+              { text: 'Overview', link: '/embed/' },
             ],
           },
           {

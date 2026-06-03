@@ -166,6 +166,9 @@ These are handled by the Worker directly, not proxied to the backend.
 | `/embed/products` | GET | Product data API for embed widgets |
 | `/embed-demo` | GET | Embed widget demo page |
 
+See the [Embed Widget](/embed/) guide for the full integration (script
+attributes, programmatic API, checkout, theming).
+
 ## Internal / Admin
 
 | Route | Method | Auth | Description |
