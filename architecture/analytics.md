@@ -15,7 +15,9 @@ The storefront pushes the following GA4 e-commerce events automatically:
 | `view_item` | Product page load | `product-controller.js` | SKU, name, price, currency |
 | `view_item_list` | Category page load | `category-filter-controller.js` | Up to 20 products, list name |
 | `add_to_cart` | Add to cart action | `product-controller.js` | SKU, name, price, qty, currency |
+| `add_to_wishlist` | Add to wishlist (heart button) | `wishlist-controller.js` | Product id, currency |
 | `remove_from_cart` | Remove from cart | `cart-controller.js`, `cart-drawer-controller.js` | SKU, name, price, qty |
+| `view_cart` | Cart page load (with items) | `cart-controller.js` | Cart items, grand total |
 | `begin_checkout` | Checkout page load | `checkout-controller.js` | Cart items, grand total |
 | `add_shipping_info` | Continue to payment step | `checkout-controller.js` | Cart items, total, shipping method |
 | `add_payment_info` | Payment method selected | `checkout-controller.js` | Cart items, total, payment method |
@@ -62,6 +64,17 @@ Zaraz automatically reads `window.dataLayer` events, making it a drop-in listene
 4. Enter your GA4 Measurement ID (e.g. `G-DB59VKFGTM`)
 5. The default **Pageview** trigger is created automatically -- this handles `page_view` events
 
+::: danger Enable dataLayer compatibility — required for e-commerce events
+The storefront emits e-commerce events with `window.dataLayer.push({ event, ecommerce })`.
+Zaraz only forwards those when **Google's dataLayer compatibility** is enabled:
+**Zaraz** > **Settings** > toggle **"Enable Google's dataLayer compatibility"** on.
+
+Without it, Zaraz still sends the automatic **pageview**, so you'll see page
+views in GA4 but **no `add_to_cart` / `view_cart` / `begin_checkout` / `purchase`
+events** — the exact symptom of a half-configured setup. The triggers in Step 2
+(which match on ``client.__zarazTrack``) never fire until this is on.
+:::
+
 #### Step 2: Create E-commerce Triggers
 
 For each e-commerce event, you need a **trigger** and an **action**.
@@ -74,7 +87,9 @@ First, create the triggers. Go to **Zaraz** > **Triggers** > **Create trigger** 
 | `E-commerce: view_item` | Match rule | ``client.__zarazTrack`` | Equals | `view_item` |
 | `E-commerce: view_item_list` | Match rule | ``client.__zarazTrack`` | Equals | `view_item_list` |
 | `E-commerce: add_to_cart` | Match rule | ``client.__zarazTrack`` | Equals | `add_to_cart` |
+| `E-commerce: add_to_wishlist` | Match rule | ``client.__zarazTrack`` | Equals | `add_to_wishlist` |
 | `E-commerce: remove_from_cart` | Match rule | ``client.__zarazTrack`` | Equals | `remove_from_cart` |
+| `E-commerce: view_cart` | Match rule | ``client.__zarazTrack`` | Equals | `view_cart` |
 | `E-commerce: begin_checkout` | Match rule | ``client.__zarazTrack`` | Equals | `begin_checkout` |
 | `E-commerce: add_shipping_info` | Match rule | ``client.__zarazTrack`` | Equals | `add_shipping_info` |
 | `E-commerce: add_payment_info` | Match rule | ``client.__zarazTrack`` | Equals | `add_payment_info` |
@@ -92,7 +107,9 @@ Go to **Zaraz** > **Tools** > click your **GA4 tool** > **Add action** for each 
 | View Item | `view_item` | E-commerce: view_item |
 | View Item List | `view_item_list` | E-commerce: view_item_list |
 | Add to Cart | `add_to_cart` | E-commerce: add_to_cart |
+| Add to Wishlist | `add_to_wishlist` | E-commerce: add_to_wishlist |
 | Remove from Cart | `remove_from_cart` | E-commerce: remove_from_cart |
+| View Cart | `view_cart` | E-commerce: view_cart |
 | Begin Checkout | `begin_checkout` | E-commerce: begin_checkout |
 | Add Shipping Info | `add_shipping_info` | E-commerce: add_shipping_info |
 | Add Payment Info | `add_payment_info` | E-commerce: add_payment_info |
