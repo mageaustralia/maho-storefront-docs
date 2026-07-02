@@ -96,6 +96,30 @@ Products are fetched in pages of 100 via auto-pagination:
 
 For large catalogs (1000+ products), full sync can take several seconds. Use partial syncs for targeted updates.
 
+### Listing-stub refetch
+
+The category-listing API response drops type-specific child arrays — a
+grouped/bundle/downloadable/giftcard product's KV entry only carries its
+listing-view fields, not the children a PDP needs to render its options.
+
+`src/routes/url-resolver.tsx` detects this at request time and pulls
+`/api/rest/v2/products/{id}` (full detail) before rendering. The stub check
+covers each type that has a child array:
+
+| Type | Missing when |
+|---|---|
+| `configurable` | `configurableOptions` empty |
+| `grouped` | `groupedProducts` empty |
+| `bundle` | `bundleOptions` empty |
+| `downloadable` | `downloadableLinks` empty |
+| `giftcard` | `giftcardType` unset |
+
+On a hit, the refetched full record is written back to
+`{store}:product:{urlKey}` with a 24-hour TTL, so subsequent visits use it
+directly. Adding a new product type with child arrays? Extend the
+`isListingStub` union in the URL resolver — see
+[creating a variant → Step 5](../components/creating-a-variant.md#step-5-add-a-listing-stub-refetch).
+
 ## Admin Module Integration
 
 The Maho admin module (`Mageaustralia_Storefront`) triggers syncs automatically:

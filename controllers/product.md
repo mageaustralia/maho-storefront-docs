@@ -24,7 +24,7 @@ The product controller manages the product detail page - variant selection, gall
 |-------|------|-------------|
 | `variants` | String (JSON) | Configurable product variants array |
 | `sku` | String | Base product SKU |
-| `type` | String | Product type (simple, configurable, bundle, grouped) |
+| `type` | String | Product type (`simple`, `configurable`, `grouped`, `bundle`, `downloadable`, `virtual`, `giftcard`) |
 | `productId` | Number | Product entity ID |
 | `mediaGallery` | String (JSON) | Gallery image URLs |
 
@@ -99,8 +99,37 @@ The add-to-cart flow:
 
 1. Validates all required options are selected
 2. Ensures quantity > 0 and within stock limits
-3. POSTs to the Maho API via `api.post('/cart/items', { sku, qty, options })`
-4. On success: dispatches `cart:updated` custom event, opens cart drawer
-5. On error: displays inline error message
+3. Builds a type-specific request body via a per-type builder (see below)
+4. POSTs to `/api/guest-carts/{maskedId}/items` (guest) or the authenticated cart
+5. On success: dispatches `cart:updated` custom event, opens cart drawer
+6. On error: displays inline error message
+
+### Per-type body builders
+
+`add()` dispatches to a table of private builders keyed by `typeValue`. Each
+builder reads its inputs from the DOM (`data-*` attributes wired by the
+`ProductOptions` components — see [product-display components](../components/product-display.md#product-options)),
+validates required fields, and mutates the outgoing `body` in place.
+
+| Type | Builder | Fields set on body |
+|---|---|---|
+| `configurable` | `_buildConfigurableBody` | `sku` (resolved child variant SKU) |
+| `grouped` | `_buildGroupedBody` | `sku`, `superGroup` (childId → qty) |
+| `bundle` | `_buildBundleBody` | `sku`, `bundleOption`, `bundleOptionQty` |
+| `downloadable` | `_buildDownloadableBody` | `sku`, `links` |
+| `giftcard` | `_buildGiftcardBody` | `sku`, `giftcardAmount`, `giftcardSenderName`/`Email`, `giftcardRecipientName`/`Email`, optional `giftcardMessage` + `giftcardDeliveryDate` |
+| `simple` / `virtual` | (default) | `sku` |
+
+Two shared helpers run for every type after the type-specific builder:
+
+- `_appendCustomOptions(body)` — reads `[data-custom-option-id]` inputs, sets
+  `body.options = { optionId: valueId }`.
+- `_appendOptionFiles(body)` — reads `[data-custom-option-file-id]` inputs,
+  base64-encodes each file, sets `body.options_files`.
+
+All keys are **camelCase** on the wire — the API-Platform DTO
+(`Mage_Checkout_Api_CartProcessor::addItemToCart`) converts them to snake_case
+for Maho's internal buy request. Sending `bundle_option` etc. from the client
+is silently dropped.
 
 Source: `src/js/controllers/product-controller.js`
