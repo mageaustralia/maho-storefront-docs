@@ -9,4 +9,4 @@ extensions:
     storefront_url_key: followup-email
     github_url: "https://github.com/mageaustralia/maho-module-followup-email"
     source:
-      path: "../../maho-modules/maho-module-followup-email/docs"
+      path: "../maho-modules/maho-module-followup-email/docs"
