@@ -108,6 +108,64 @@ Both tab variants include a specifications section that displays additional prod
 
 Attributes rendered as a table with label/value pairs. Core attributes (name, SKU, price, etc.) are excluded - only custom product attributes appear.
 
+## Product Options
+
+The per-product-type option UI (configurable swatches, bundle selections,
+downloadable link checkboxes, giftcard amount + recipient fields, custom
+options, etc.) is centralised in `src/templates/components/product-options/`.
+Layouts render a single `<ProductOptions>` dispatcher instead of duplicating
+the type-branching inline.
+
+### Files
+
+| File | Renders when |
+|---|---|
+| `ConfigurableOptions.tsx` | `product.type === 'configurable'` — swatch/attribute buttons; accepts a `swatchMap` for color-image thumbnails |
+| `GroupedOptions.tsx` | `product.type === 'grouped'` — qty steppers per child; `variant='compact'` = flex row, `variant='standard'` = full table with thumbnails |
+| `BundleOptions.tsx` | `product.type === 'bundle'` — `<select>`/`radio`/`checkbox` per option plus a qty stepper for options with `canChangeQty` |
+| `DownloadableOptions.tsx` | `product.type === 'downloadable'` — link list with sample-file links |
+| `GiftcardOptions.tsx` | `product.type === 'giftcard'` — amount (fixed dropdown / range input / combined), sender + recipient + message + delivery-date |
+| `CustomOptions.tsx` | Any product with `product.customOptions` — drop-down/checkbox/radio/file/textarea/date/text |
+| `index.tsx` | `ProductOptions` dispatcher — the entry point layouts use |
+
+### Dispatcher props
+
+```tsx
+<ProductOptions
+  product={product}
+  currency={currency}
+  formatPrice={formatPrice}
+  swatchMap={swatchMap}          // color-swatch image URLs (configurable only)
+  variant="compact"              // 'compact' (default) or 'standard'
+  excludeConfigurable={false}    // skip configurable when the layout renders it elsewhere
+/>
+```
+
+- **`variant`** — `'compact'` (default) uses narrow-column DaisyUI styling.
+  `'standard'` swaps `GroupedOptions` for a wider table with thumbnails and
+  full qty steppers. All other option components use the same DaisyUI classes
+  regardless of variant.
+- **`excludeConfigurable`** — used by `Product.tsx` (the standard layout)
+  because it renders `<ConfigurableOptions>` inside its sticky add-to-cart bar
+  rather than inline with the other option blocks.
+
+### Data attributes (JS contract)
+
+The JS controller reads inputs from the DOM via `data-*` attributes wired by
+these components. Keep them stable when adding new markup:
+
+| Attribute | Source component | Read by |
+|---|---|---|
+| `data-attribute-code`, `data-value` | `ConfigurableOptions` | `product#selectOption` (variant resolution) |
+| `data-grouped-id` | `GroupedOptions` | `_buildGroupedBody` |
+| `data-bundle-option-id`, `data-bundle-qty-option` | `BundleOptions` | `_buildBundleBody`, `product#updateBundlePrice` |
+| `data-download-link-id` | `DownloadableOptions` | `_buildDownloadableBody` |
+| `data-giftcard-field` | `GiftcardOptions` | `_buildGiftcardBody` |
+| `data-custom-option-id`, `data-custom-option-file-id` | `CustomOptions` | `_appendCustomOptions`, `_appendOptionFiles` |
+
+See [product controller](../controllers/product.md#per-type-body-builders) for
+how each attribute maps to the outgoing API payload.
+
 ## Configuration
 
 ```json

@@ -148,3 +148,122 @@ When creating a variant, ensure:
 - [ ] Works at all breakpoints (mobile, tablet, desktop)
 
 Source: `src/templates/components/`, `scripts/generate-manifest.js`
+
+---
+
+## Adding a New Product Type
+
+Product-type option UI (configurable, grouped, bundle, downloadable, giftcard,
+custom-options) is not a slot variant — it lives in the shared
+`product-options/` module. Adding a new product type is a four-file change.
+
+### Step 1: Add the type-specific fields to `types.ts`
+
+Extend the `Product` interface with any fields the API returns for the new
+type. Example for a hypothetical `subscription` type:
+
+```ts
+// src/types.ts
+subscriptionInterval?: 'weekly' | 'monthly' | 'quarterly' | null;
+subscriptionMinCommitment?: number | null;
+```
+
+### Step 2: Create the option component
+
+```
+src/templates/components/product-options/SubscriptionOptions.tsx
+```
+
+Render form controls using **DaisyUI classes** (matches every other option
+component) and wire the JS contract with `data-<type>-field="..."` attributes:
+
+```tsx
+import { jsx } from 'hono/jsx';
+import type { FC } from 'hono/jsx';
+import type { OptionsProps } from './types';
+
+export const SubscriptionOptions: FC<OptionsProps> = ({ product }) => {
+  return (
+    <div class="flex flex-col gap-3">
+      <label class="text-sm font-medium mb-1 block">
+        Delivery frequency <span class="text-error ml-0.5">*</span>
+      </label>
+      <select
+        class="select select-sm w-full"
+        required
+        data-subscription-field="interval"
+      >
+        <option value="">Choose…</option>
+        <option value="weekly">Weekly</option>
+        <option value="monthly">Monthly</option>
+        <option value="quarterly">Quarterly</option>
+      </select>
+    </div>
+  );
+};
+```
+
+### Step 3: Register with the dispatcher
+
+Add one line to `product-options/index.tsx`:
+
+```tsx
+import { SubscriptionOptions } from './SubscriptionOptions';
+
+// inside <ProductOptions>:
+{product.type === 'subscription' && <SubscriptionOptions {...props} />}
+```
+
+Every layout (`Product.tsx`, `LayoutMasonry.tsx`, `InfoPanelCompact.tsx`) already
+renders `<ProductOptions>` — no per-layout changes needed.
+
+### Step 4: Extract the payload in the controller
+
+Add a per-type builder to `product-controller.js` and register it in the
+`builders` table inside `add()`:
+
+```js
+_buildSubscriptionBody(body) {
+  body.sku = this.skuValue;
+  const interval = this.element.querySelector('[data-subscription-field="interval"]')?.value;
+  if (!interval) throw new Error('Please select a delivery frequency');
+  body.subscriptionInterval = interval;  // camelCase — see product controller docs
+}
+
+// then in add():
+const builders = {
+  // ...
+  subscription: () => this._buildSubscriptionBody(body),
+};
+```
+
+The camelCase field name has to match the backend API-Platform DTO field
+(`Mage_Checkout_Api_CartProcessor::addItemToCart`). Snake_case fields are
+silently dropped by the DTO validator.
+
+### Step 5: Add a listing-stub refetch
+
+If the new type has child arrays (like `groupedProducts`, `bundleOptions`)
+that the category-listing endpoint drops, extend the `isListingStub` guard in
+`src/routes/url-resolver.tsx` so the URL resolver refetches full detail:
+
+```ts
+|| (kvProduct.type === 'subscription' && !kvProduct.subscriptionInterval)
+```
+
+Skip this step for types whose full data already comes back in the listing
+response (e.g. simple products with just custom options).
+
+### Product-type checklist
+
+- [ ] `types.ts` extended with the new type's fields
+- [ ] `<Type>Options.tsx` created with DaisyUI classes
+- [ ] Case added to `product-options/index.tsx`
+- [ ] `_build<Type>Body` method + `builders` table entry in `product-controller.js`
+- [ ] `isListingStub` extended in `url-resolver.tsx` (if the type has child arrays)
+- [ ] Backend DTO (`Cart.php` mutation args + `CartProcessor.php` forwarding) also updated in the mahocommerce/maho repo
+- [ ] Tested add-to-cart on `demo.mageaustralia.com.au` for the new type
+
+Source: `src/templates/components/product-options/`,
+`src/js/controllers/product-controller.js`,
+`src/routes/url-resolver.tsx`
