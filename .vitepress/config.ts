@@ -152,6 +152,7 @@ export default withMermaid(
             items: [
               { text: 'TypeScript Types', link: '/reference/types' },
               { text: 'Configuration', link: '/reference/configuration' },
+              { text: 'Versioning', link: '/reference/versioning' },
             ],
           },
         ],
