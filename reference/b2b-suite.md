@@ -16,7 +16,7 @@ the same behaviours.
 |---|---|---|
 | **B2B Access** | `mageaustralia/maho-module-b2b-access` | Access + visibility gate. Require login to view the store, hide prices with a "Log in to see pricing" message, block purchasing, all scoped by customer group / category / store. |
 | **Customer Approval** | `mageaustralia/maho-module-customer-approval` | New registrations land in `pending`. Admin approves / rejects from a grid; approval / rejection emails go out; pending customers cannot log in. |
-| **Custom Forms** | `mageaustralia/maho-module-custom-forms` | Form builder with an anti-spam pipeline (honeypot, min-fill time, rate limit, optional captcha). Forms embed via a `{{ '{{' }}block type="customforms/form" form_code="…"{{ '}}' }}` directive on any CMS page. Also exposes a headless render + submit API. |
+| **Custom Forms** | `mageaustralia/maho-module-custom-forms` | Form builder with an anti-spam pipeline (honeypot, min-fill time, rate limit, optional captcha). Forms embed on any CMS page via a Maho block directive (see the embed section below). Also exposes a headless render + submit API. |
 | **B2B Registration** | `mageaustralia/maho-module-b2b-registration` | Wires the three above together: a Custom Forms trade-application submission becomes a pending customer account (via Customer Approval), and on approve the customer is auto-assigned to a nominated B2B customer group. |
 
 They compose like this:
@@ -156,7 +156,9 @@ Maho `{{ '{{' }} … {{ '}}' }}` directive as a Vue expression):
 
 <div v-pre>
 
-```
+<div v-pre>
+
+```html
 {{block type="customforms/form" form_code="trade_application"}}
 <div data-maho-form="trade_application"></div>
 ```
