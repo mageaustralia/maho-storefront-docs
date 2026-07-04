@@ -82,6 +82,47 @@ Everything the module does is observer-driven:
 
 Nothing is JS-side — a crafted URL cannot bypass it.
 
+### Rules mode: multi-rule gate with product-attribute matching
+
+The default "Basic" mode is a single gate: one activation matrix + one action.
+Switch **Mode** to *Rules* under *General* and you get *Customers → B2B Access
+Rules*, a grid where every row is a scoped rule with its own trigger and
+actions.
+
+Each rule has:
+
+- **Activation scope** (all AND'ed together): customer groups, stores,
+  destination countries. Leave a dimension empty to match any value.
+- **Product matching** — a Catalog-Rule-style condition tree. Reuses Maho's
+  standard rule-builder widget, so you can match on:
+  - **Product attributes**: `Brand = Head`, `Color IN (Red, Blue)`, `Weight > 500g`
+  - **SKU**: `SKU CONTAINS "BAG-"`, `SKU == abl003`
+  - **Category**: `Category IN (Racquets, Shoes)`
+  - **Price**: `Price > $500`
+  - **Nested combinations**: `(Brand = Head AND Category = Racquets) OR SKU IN (X, Y, Z)`
+  - Any product attribute in the system, including custom EAV attributes.
+
+  An empty tree matches *every* product in the activation scope — that's the
+  "hide all prices from group X" case.
+- **Actions** (booleans, applied when the rule matches):
+  - Hide from listings and search
+  - Hide price
+  - Block purchase
+  - Redirect gated product page to a CMS page
+- **Enforcement**: *Visibility* (storefront-only), *Checkout* (checkout guard
+  only), *Both*.
+- **Message override**: per-rule "hidden price" text, falling back to the
+  store default from System Configuration.
+
+Rules are evaluated in priority order (lowest number first) and short-circuit
+when a matching rule fires. See
+[maho-module-b2b-access](https://github.com/mageaustralia/maho-module-b2b-access)
+for the schema.
+
+Pre-v1.2 rules (with only the flat `scope_category_ids` column + product-link
+table) keep working — the gate evaluator falls back to those when a rule has
+no condition tree.
+
 ---
 
 ## Customer Approval
