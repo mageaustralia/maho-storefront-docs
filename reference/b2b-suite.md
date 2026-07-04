@@ -307,6 +307,40 @@ The integration follows the pattern documented in
   embedded storefront form lands as a pending customer just like a stock
   Maho form submit does.
 
+### End-to-end test results
+
+The four tests exercised against `demo.mageaustralia.com.au`
+(backed by the staging install):
+
+| Test | What | Result |
+|---|---|---|
+| A. Guest PDP | Fresh incognito → `/flapover-briefcase` | ✅ Renders "Log in to see pricing" in place of $570; freshness re-check preserves the gate. |
+| B. Wholesale customer PDP | Sign in as `ada.demo+b2b@example.com` (group=Wholesale) → same PDP | ✅ Client-side freshness re-fetch forwards the customer's JWT, gets `finalPrice: 570`, and swaps the gate for the real price. (SSR still uses the guest-view KV; the swap happens on load, causing a brief gate flash.) |
+| C. Disable module + resync | Set `b2baccess/general/enabled = 0`, resync, revisit as guest | ✅ Gate disappears, $570 renders. Re-enable + resync restores gate. |
+| D. Backend contract | `curl` config endpoint + product endpoint as guest + as JWT | ✅ Guest gets `hidePrice: true, price: null`; Wholesale JWT gets `hidePrice: false, price: 570`. |
+
+The load-bearing fix that made B work was ferrying the API caller's group
+through the event dispatch:
+[mageaustralia/maho#19](https://github.com/mageaustralia/maho/pull/19)
+adds `customer_group_id` to the `api_product_dto_build` event, and
+[maho-module-b2b-access PR #4](https://github.com/mageaustralia/maho-module-b2b-access/pull/4)
+consumes it in the observer.
+
+### Known follow-ups
+
+- **SSR-time per-caller data** would remove the brief gate-flash before
+  the freshness controller re-fetches with the customer's JWT. Two paths:
+  either the storefront SSR fetches the current URL with the customer's
+  auth token instead of reading KV, or the sync maintains per-group KV
+  variants.
+- **Add-to-Cart suppression** for `canCheckout: false`: the flag is on
+  the DTO but the button isn't hidden yet. Backend rejects any actual
+  cart mutation via the existing observer, so this is UX-only.
+- **Card variants** (`CardStandard`, `CardMinimal`, `CardHorizontal`,
+  `CardFeatured`) render empty prices for gated products.
+  `formatPrice(null)` returns an empty string, which looks broken rather
+  than showing a login prompt on category grids.
+
 ### Verifying the B2B Access integration
 
 Against `demo.mageaustralia.com.au` (backed by `maho.tenniswarehouse.com.au`):
