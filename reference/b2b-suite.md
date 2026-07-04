@@ -322,8 +322,8 @@ them:
 
 Then the storefront:
 
-- Renders `<PriceOrLoginPrompt>` in place of the price component when
-  `product.hidePrice` is set.
+- Renders a `PriceOrLoginPrompt` component in place of the price component
+  when `product.hidePrice` is set.
 - Suppresses "Add to Cart" when `product.canCheckout` is false.
 - Redirects guests off gated categories client-side (server-side reject on the
   catalog collection endpoint is the enforcement).
