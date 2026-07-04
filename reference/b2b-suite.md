@@ -285,20 +285,51 @@ that responsibility handled.
 
 ## Headless storefronts
 
-All four modules expose their state over the API-Platform layer:
+**Status as of 2026-07:** the *modules work perfectly on a stock, server-rendered
+Maho storefront*. The headless surface (this project) currently gets:
 
-- **B2B Access** — the catalog API omits `price` for gated products and adds
-  a `requires_login` / `hide_price` / `can_checkout` flag so the storefront
-  can render "Log in to see pricing" and hide the add-to-cart control.
-- **Customer Approval** — the JWT token endpoint refuses to issue a token
-  for a pending customer.
-- **Custom Forms** — `GET /api/customforms/form/{code}` returns the form
-  schema; `POST /api/customforms/submit` runs the same server-side pipeline
-  as the stock Maho endpoint. The headless flag `customforms/api_enabled`
-  controls exposure.
-- **B2B Registration** — trade-application submissions surface on the same
-  Trade Applications resource an admin sees, so a headless admin UI can
-  approve.
+- **Custom Forms** — full parity. `GET /api/rest/v2/custom-forms/{code}` returns
+  the schema, `POST /api/rest/v2/custom-form-submissions` runs the same anti-spam
+  pipeline as the browser endpoint. The trade-application form on the storefront
+  is fed by these routes.
+- **Customer Approval** — the JWT token endpoint refuses to issue a token for a
+  pending customer, so a headless login attempt gets the right error.
+- **B2B Registration** — the observer fires the same way on either the browser
+  submit path or the headless one, so a trade application from an embedded
+  storefront form lands as a pending customer just like a stock Maho form
+  submit does.
+- **B2B Access** — **not yet integrated with the headless catalog API.** The
+  gate is enforced correctly on stock Maho pages, but the API's product
+  responses currently ship the price for every caller regardless of group.
+  A headless storefront overlaying the catalog API will show the price to
+  guests even when Hide Prices is on.
+
+### What needs to happen for B2B Access to reach the headless storefront
+
+The catalog API needs three additive changes (all in
+`Mage/Catalog/Api/ProductProvider.php`) and the storefront needs to consume
+them:
+
+1. **Emit gate flags on the DTO** — add `requiresLogin`, `hidePrice`,
+   `canCheckout` boolean fields, populated from B2B Access's activation matrix
+   evaluated against the current caller's group.
+2. **Omit `price` when `hidePrice` is true** — the API just doesn't ship the
+   price field for gated products; the storefront treats `null` as "log in to
+   see pricing". This keeps the response cacheable per-group.
+3. **Reject cart mutations when `canCheckout` is false** — belt-and-braces on
+   the write side, mirrors the observer that stops crafted-URL add-to-cart
+   on the stock storefront.
+
+Then the storefront:
+
+- Renders `<PriceOrLoginPrompt>` in place of the price component when
+  `product.hidePrice` is set.
+- Suppresses "Add to Cart" when `product.canCheckout` is false.
+- Redirects guests off gated categories client-side (server-side reject on the
+  catalog collection endpoint is the enforcement).
+
+That's the plan; not shipping in this docs cycle. Tracked as
+[maho-module-b2b-access#TBD] once we file it.
 
 ## Next in the roadmap
 
