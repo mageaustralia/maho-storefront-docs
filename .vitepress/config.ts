@@ -154,6 +154,7 @@ export default withMermaid(
               { text: 'Configuration', link: '/reference/configuration' },
               { text: 'Versioning', link: '/reference/versioning' },
               { text: 'B2B Suite', link: '/reference/b2b-suite' },
+              { text: 'B2B Integration Pattern', link: '/reference/b2b-integration-pattern' },
             ],
           },
         ],
