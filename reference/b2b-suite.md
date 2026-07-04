@@ -151,10 +151,8 @@ a mapping key that becomes the payload attribute name.
 
 ### Embedding on the frontend
 
-Two lines of CMS content (v-pre so VitePress doesn't try to render the
-Maho `{{ '{{' }} … {{ '}}' }}` directive as a Vue expression):
-
-<div v-pre>
+Two lines of CMS content (wrapped in `v-pre` so VitePress doesn't try to
+render the Maho double-curly directive as a Vue expression):
 
 <div v-pre>
 
