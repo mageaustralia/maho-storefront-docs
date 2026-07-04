@@ -283,51 +283,55 @@ that responsibility handled.
 
 ## Headless storefronts
 
-**Status as of 2026-07:** the *modules work perfectly on a stock, server-rendered
-Maho storefront*. The headless surface (this project) currently gets:
+**Status as of 2026-07-04:** all four modules reach the headless storefront.
+The integration follows the pattern documented in
+[B2B Integration Pattern](./b2b-integration-pattern).
 
-- **Custom Forms** — full parity. `GET /api/rest/v2/custom-forms/{code}` returns
-  the schema, `POST /api/rest/v2/custom-form-submissions` runs the same anti-spam
-  pipeline as the browser endpoint. The trade-application form on the storefront
-  is fed by these routes.
-- **Customer Approval** — the JWT token endpoint refuses to issue a token for a
-  pending customer, so a headless login attempt gets the right error.
-- **B2B Registration** — the observer fires the same way on either the browser
-  submit path or the headless one, so a trade application from an embedded
-  storefront form lands as a pending customer just like a stock Maho form
-  submit does.
-- **B2B Access** — **not yet integrated with the headless catalog API.** The
-  gate is enforced correctly on stock Maho pages, but the API's product
-  responses currently ship the price for every caller regardless of group.
-  A headless storefront overlaying the catalog API will show the price to
-  guests even when Hide Prices is on.
+- **B2B Access** — live. The catalog API annotates each product DTO with an
+  `extensions.b2bAccess.gateFlags` block containing `requiresLogin` /
+  `hidePrice` / `canCheckout`, and withholds `price` / `finalPrice` /
+  `specialPrice` / `minimalPrice` when `hidePrice` is true. The storefront's
+  `src/plugins/b2b-access/sync.ts` probes
+  `GET /api/rest/v2/b2b/access/config` at sync time and registers a plugin
+  manifest; the `GatedPrice` component reads the flag at render and swaps in
+  the login prompt.
+- **Custom Forms** — live. `GET /api/rest/v2/custom-forms/{code}` returns the
+  schema; `POST /api/rest/v2/custom-form-submissions` runs the same anti-spam
+  pipeline as the browser endpoint. The trade-application form on the
+  storefront is fed by these routes.
+- **Customer Approval** — live. The JWT token endpoint refuses to issue a
+  token for a pending customer, so a headless login attempt gets the right
+  error.
+- **B2B Registration** — live. The observer fires the same way on either the
+  browser submit path or the headless one, so a trade application from an
+  embedded storefront form lands as a pending customer just like a stock
+  Maho form submit does.
 
-### What needs to happen for B2B Access to reach the headless storefront
+### Verifying the B2B Access integration
 
-The catalog API needs three additive changes (all in
-`Mage/Catalog/Api/ProductProvider.php`) and the storefront needs to consume
-them:
+Against `demo.mageaustralia.com.au` (backed by `maho.tenniswarehouse.com.au`):
 
-1. **Emit gate flags on the DTO** — add `requiresLogin`, `hidePrice`,
-   `canCheckout` boolean fields, populated from B2B Access's activation matrix
-   evaluated against the current caller's group.
-2. **Omit `price` when `hidePrice` is true** — the API just doesn't ship the
-   price field for gated products; the storefront treats `null` as "log in to
-   see pricing". This keeps the response cacheable per-group.
-3. **Reject cart mutations when `canCheckout` is false** — belt-and-braces on
-   the write side, mirrors the observer that stops crafted-URL add-to-cart
-   on the stock storefront.
+```
+$ curl -s https://maho.tenniswarehouse.com.au/api/rest/v2/b2b/access/config -u USER:PASS | jq .enabled
+true
 
-Then the storefront:
+$ curl -s https://maho.tenniswarehouse.com.au/api/rest/v2/products?urlKey=flapover-briefcase -u USER:PASS \
+    | jq '.member[0] | {price, finalPrice, extensions}'
+{
+  "price": null,
+  "finalPrice": null,
+  "extensions": {
+    "b2bAccess": {
+      "gateFlags": { "requiresLogin": false, "hidePrice": true, "canCheckout": false },
+      "hiddenPriceMessage": "Log in to see pricing."
+    }
+  }
+}
+```
 
-- Renders a `PriceOrLoginPrompt` component in place of the price component
-  when `product.hidePrice` is set.
-- Suppresses "Add to Cart" when `product.canCheckout` is false.
-- Redirects guests off gated categories client-side (server-side reject on the
-  catalog collection endpoint is the enforcement).
-
-That's the plan; not shipping in this docs cycle. Tracked as
-[maho-module-b2b-access#TBD] once we file it.
+The storefront's PDP for that product renders "Log in to see pricing" in
+place of the price. Logging in as a Wholesale-group customer causes the
+catalog API to return the real price and the storefront to render it.
 
 ## Next in the roadmap
 
